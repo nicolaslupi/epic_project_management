@@ -21,7 +21,7 @@ class DateTimeInput(forms.DateTimeInput):
     input_type = 'date'
 
 class CreateComponent(forms.ModelForm):
-    repeat = forms.IntegerField()
+    repeat = forms.IntegerField(required=False)
     class Meta:
         model = models.Component
         fields = '__all__'
