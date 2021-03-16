@@ -11,6 +11,11 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .serializers import *
 
+def components(request):
+    components_values = Component.objects.all()
+    context = {'components':components_values}
+    return render(request, 'data_loader/components.html', context)
+
 def load_component(request):
     if request.method == 'POST':
         form = forms.CreateComponent(request.POST)
@@ -24,7 +29,7 @@ def load_component(request):
             for i in range(repeat):
                 instance.pk = None
                 instance.save()
-            return redirect('/')
+            return redirect('data_loader:components')
     else:
         form = forms.CreateComponent()
     return render(request, 'data_loader/load_component.html', {'form':form})

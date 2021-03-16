@@ -6,6 +6,7 @@ from . import views
 app_name = 'data_loader'
 
 urlpatterns = [
+    path('components/', views.components, name='components'),
     path('load_component/', views.load_component, name='load_component'),
     path('load_system/', views.load_system, name='load_system'),
     path('load_project/', views.load_project, name='load_project'),
