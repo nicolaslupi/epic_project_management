@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
+
+<body>
+    <h1>Log In</h1>
+    <form class="site-form" action="{% url 'people:login'%}" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Log In">
+    </form>
+</body>
+{% endblock %}
+
+<!--<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -12,4 +25,4 @@
             <input type="submit" value="Log In">
         </form>
     </body>
-</html>
+</html>-->

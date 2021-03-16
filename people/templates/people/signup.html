@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Signup</title>
-    </head>
+{%extends 'base.html%}
+{% block content %}
+
     <body>
         <h1>Signup</h1>
         <form class="site-form" action="{% url 'people:signup'%}" method="post">
@@ -12,4 +9,5 @@
             <input type="submit" value="Signup">
         </form>
     </body>
-</html>
+
+{% endblock %}
