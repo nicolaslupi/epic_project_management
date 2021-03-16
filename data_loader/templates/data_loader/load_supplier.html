@@ -1,0 +1,11 @@
+{% extends 'base.html'%}
+{% block content %}
+
+<h1>Load Supplier</h1>
+<form class="site-form" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Create">
+</form>
+
+{%endblock%}
