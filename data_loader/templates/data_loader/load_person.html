@@ -2,10 +2,11 @@
 {% block content %}
 
 <h1>Load Person</h1>
+<div class="container">
 <form class="site-form" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Create">
 </form>
-
+</div>
 {%endblock%}

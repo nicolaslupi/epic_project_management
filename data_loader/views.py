@@ -15,7 +15,11 @@ def load_component(request):
     if request.method == 'POST':
         form = forms.CreateComponent(request.POST)
         if form.is_valid():
-            form.save()
+            repeat = request.POST['repeat']
+            instance = form.save(commit=False)
+            for i in range(int(repeat)):
+                instance.pk = None
+                instance.save()
             return redirect('/')
     else:
         form = forms.CreateComponent()

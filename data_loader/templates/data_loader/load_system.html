@@ -3,12 +3,13 @@
 {% block content %}
 
 <h1>Load System</h1>
-
+<div class="container">
 <form method="post" id="CreateSystem" data-stages-url="{% url 'data_loader:ajax_load_stages' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit">
 </form>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>

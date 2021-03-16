@@ -21,9 +21,11 @@ class DateTimeInput(forms.DateTimeInput):
     input_type = 'date'
 
 class CreateComponent(forms.ModelForm):
+    repeat = forms.IntegerField()
     class Meta:
         model = models.Component
         fields = '__all__'
+        
         widgets = {
                 'd_next':DateTimeInput(),
                 'd_done':DateTimeInput(),

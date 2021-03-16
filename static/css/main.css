@@ -11,3 +11,13 @@
       font-size: 3.5rem;
     }
   }
+
+  .container {
+    width: fit-content();
+    clear: both;
+  }
+  
+  .container input {
+    width: 100%;
+    clear: both;
+  }
