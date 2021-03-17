@@ -29,6 +29,7 @@
                     <th>Area</th>
                     <th>Role</th>
                     <th>Mail</th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -39,6 +40,7 @@
                     <td>{{person.area}}</td>
                     <td>{{person.role}}</td>
                     <td>{{person.mail}}</td>
+                    <td><a href="{% url 'data_loader:edit_person' person.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -12,9 +12,18 @@ from rest_framework.views import APIView
 from .serializers import *
 
 def components(request):
-    components_values = Component.objects.all()
+    components_values = Component.objects.order_by('id')
     context = {'components':components_values}
     return render(request, 'data_loader/components.html', context)
+
+def edit_component(request, id):
+    component = Component.objects.get(pk=id)
+    form = forms.CreateComponent(request.POST or None, instance=component)
+    if request.method == 'POST':
+        form.save()
+        return redirect('data_loader:components')
+    else:
+        return render(request, 'data_loader/edit_component.html', {'form':form})
 
 def load_component(request):
     if request.method == 'POST':
@@ -35,9 +44,18 @@ def load_component(request):
     return render(request, 'data_loader/load_component.html', {'form':form})
 
 def systems(request):
-    systems_values = System.objects.all()
+    systems_values = System.objects.order_by('id')
     context = {'systems':systems_values}
     return render(request, 'data_loader/systems.html', context)
+
+def edit_system(request, id):
+    system = System.objects.get(pk=id)
+    form = forms.CreateSystem(request.POST or None, instance=system)
+    if request.method == 'POST':
+        form.save()
+        return redirect('data_loader:systems')
+    else:
+        return render(request, 'data_loader/edit_system.html', {'form':form})
 
 def load_system(request):
     if request.method == 'POST':
@@ -50,9 +68,18 @@ def load_system(request):
     return render(request, 'data_loader/load_system.html', {'form':form})
 
 def projects(request):
-    projects_values = Project.objects.all()
+    projects_values = Project.objects.order_by('id')
     context = {'projects':projects_values}
     return render(request, 'data_loader/projects.html', context)
+
+def edit_project(request, id):
+    project = Project.objects.get(pk=id)
+    form = forms.CreateProject(request.POST or None, instance=project)
+    if request.method == 'POST':
+        form.save()
+        return redirect('data_loader:project')
+    else:
+        return render(request, 'data_loader/edit_project.html', {'form':form})
 
 def load_project(request):
     if request.method == 'POST':
@@ -65,9 +92,18 @@ def load_project(request):
     return render(request, 'data_loader/load_project.html', {'form':form})
 
 def persons(request):
-    persons_values = Person.objects.all()
+    persons_values = Person.objects.order_by('id')
     context = {'persons':persons_values}
     return render(request, 'data_loader/persons.html', context)
+
+def edit_person(request, id):
+    person = Person.objects.get(pk=id)
+    form = forms.CreatePerson(request.POST or None, instance=person)
+    if request.method == 'POST':
+        form.save()
+        return redirect('data_loader:persons')
+    else:
+        return render(request, 'data_loader/edit_person.html', {'form':form})
 
 def load_person(request):
     if request.method == 'POST':

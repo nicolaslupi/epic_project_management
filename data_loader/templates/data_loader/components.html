@@ -37,6 +37,7 @@
                     <th>Action Date</th>
                     <th>Assigned to System</th>
                     <th>Supplier</th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -54,6 +55,7 @@
                     <td>{{component.action_date}}</td>
                     <td>{{component.assigned_to_system}}</td>
                     <td>{{component.supplied_by}}</td>
+                    <td><a href="{% url 'data_loader:edit_component' component.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

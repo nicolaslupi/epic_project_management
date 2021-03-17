@@ -34,6 +34,7 @@
                     <th>Action</th>
                     <th>Action Date</th>
                     <th>Assigned to Project</th>
+                    <th></th>
                 </tr>
             </thead>
 
@@ -48,6 +49,7 @@
                     <td>{{system.action}}</td>
                     <td>{{system.action_date}}</td>
                     <td>{{system.assigned_to_project}}</td>
+                    <td><a href="{% url 'data_loader:edit_system' system.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
