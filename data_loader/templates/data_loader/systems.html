@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="">Systems</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Load Systems</li>
+                </ol>
+            </nav>
+        </div>
+    
+        <div class="col-md-2">
+            <a href="{%url 'data_loader:load_system'%}" class="btn btn-primary">Load System</a>
+        </div> 
+    </div>
+
+    <div class="container">
+        {% if systems.count %}
+        
+        <table class="table table-stripped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Track</th>
+                    <th>Stage</th>
+                    <th>D-Next</th>
+                    <th>D-Done</th>
+                    <th>Action</th>
+                    <th>Action Date</th>
+                    <th>Assigned to Project</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for system in systems %}
+                <tr>
+                    <td>{{system.name}}</td>
+                    <td>{{system.track}}</td>
+                    <td>{{system.stage}}</td>
+                    <td>{{system.d_next}}</td>
+                    <td>{{system.d_done}}</td>
+                    <td>{{system.action}}</td>
+                    <td>{{system.action_date}}</td>
+                    <td>{{system.assigned_to_project}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+</div>
+
+   
+
+{% endblock %}

@@ -34,6 +34,11 @@ def load_component(request):
         form = forms.CreateComponent()
     return render(request, 'data_loader/load_component.html', {'form':form})
 
+def systems(request):
+    systems_values = System.objects.all()
+    context = {'systems':systems_values}
+    return render(request, 'data_loader/systems.html', context)
+
 def load_system(request):
     if request.method == 'POST':
         form = forms.CreateSystem(request.POST)
@@ -44,6 +49,11 @@ def load_system(request):
         form = forms.CreateSystem()
     return render(request, 'data_loader/load_system.html', {'form':form})
 
+def projects(request):
+    projects_values = Project.objects.all()
+    context = {'projects':projects_values}
+    return render(request, 'data_loader/projects.html', context)
+
 def load_project(request):
     if request.method == 'POST':
         form = forms.CreateProject(request.POST)
@@ -53,6 +63,11 @@ def load_project(request):
     else:
         form = forms.CreateProject()
     return render(request, 'data_loader/load_project.html', {'form':form})
+
+def persons(request):
+    persons_values = Person.objects.all()
+    context = {'persons':persons_values}
+    return render(request, 'data_loader/persons.html', context)
 
 def load_person(request):
     if request.method == 'POST':

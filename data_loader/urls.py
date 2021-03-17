@@ -7,6 +7,9 @@ app_name = 'data_loader'
 
 urlpatterns = [
     path('components/', views.components, name='components'),
+    path('systems/', views.systems, name='systems'),
+    path('projects/', views.projects, name='projects'),
+    path('persons/', views.persons, name='persons'),
     path('load_component/', views.load_component, name='load_component'),
     path('load_system/', views.load_system, name='load_system'),
     path('load_project/', views.load_project, name='load_project'),

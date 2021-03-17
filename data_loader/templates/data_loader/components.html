@@ -2,7 +2,6 @@
 {% block content %}
 
 
-
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-10">
@@ -34,6 +33,10 @@
                     <th>Stage</th>
                     <th>D-Next</th>
                     <th>D-Done</th>
+                    <th>Action</th>
+                    <th>Action Date</th>
+                    <th>Assigned to System</th>
+                    <th>Supplier</th>
                 </tr>
             </thead>
 
@@ -47,6 +50,10 @@
                     <td>{{component.stage}}</td>
                     <td>{{component.d_next}}</td>
                     <td>{{component.d_done}}</td>
+                    <td>{{component.action}}</td>
+                    <td>{{component.action_date}}</td>
+                    <td>{{component.assigned_to_system}}</td>
+                    <td>{{component.supplied_by}}</td>
                 </tr>
                 {% endfor %}
             </tbody>

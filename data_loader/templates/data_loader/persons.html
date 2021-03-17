@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="">Persons</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Load Persons</li>
+                </ol>
+            </nav>
+        </div>
+    
+        <div class="col-md-2">
+            <a href="{%url 'data_loader:load_person'%}" class="btn btn-primary">Load Person</a>
+        </div> 
+    </div>
+
+    <div class="container">
+        {% if persons.count %}
+        
+        <table class="table table-stripped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Area</th>
+                    <th>Role</th>
+                    <th>Mail</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for person in persons %}
+                <tr>
+                    <td>{{person.full_name}}</td>
+                    <td>{{person.area}}</td>
+                    <td>{{person.role}}</td>
+                    <td>{{person.mail}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
