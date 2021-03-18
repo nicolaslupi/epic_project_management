@@ -2,13 +2,26 @@
 
 {% block content %}
 
-<h1>Load Project</h1>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="">Projects</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Load Project</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
 <div class="container">
-<form method="post" id="CreateProject" data-stages-url="{% url 'data_loader:ajax_load_stages' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+    <form method="post" id="CreateProject" data-stages-url="{% url 'data_loader:ajax_load_stages' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit">
+    </form>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

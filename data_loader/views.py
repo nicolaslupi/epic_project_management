@@ -62,7 +62,7 @@ def load_system(request):
         form = forms.CreateSystem(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('data_loader:systems')
     else:
         form = forms.CreateSystem()
     return render(request, 'data_loader/load_system.html', {'form':form})
@@ -86,7 +86,7 @@ def load_project(request):
         form = forms.CreateProject(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('data_loader:projects')
     else:
         form = forms.CreateProject()
     return render(request, 'data_loader/load_project.html', {'form':form})
@@ -110,7 +110,7 @@ def load_person(request):
         form = forms.CreatePerson(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('data_loader:persons')
     else:
         form = forms.CreatePerson()
     return render(request,'data_loader/load_person.html', {'form':form})
@@ -120,10 +120,24 @@ def load_supplier(request):
         form = forms.CreateSupplier(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('data_loader:suppliers')
     else:
-        form = forms.CreatePerson()
+        form = forms.CreateSupplier()
     return render(request,'data_loader/load_supplier.html', {'form':form})
+
+def edit_supplier(request, id):
+    supplier = Supplier.objects.get(pk=id)
+    form = forms.CreateSupplier(request.POST or None, instance=supplier)
+    if request.method == 'POST':
+        form.save()
+        return redirect('data_loader:suppliers')
+    else:
+        return render(request, 'data_loader/edit_supplier.html', {'form':form})
+
+def suppliers(request):
+    suppliers_values = Supplier.objects.order_by('id')
+    context = {'suppliers':suppliers_values}
+    return render(request, 'data_loader/suppliers.html', context)
 
 # AJAX
 def load_stages(request):

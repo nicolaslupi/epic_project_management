@@ -2,7 +2,20 @@
 
 {% block content %}
 
-<h1>Load System</h1>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="">Suppliers</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Load Supplier</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
 <div class="container">
 <form method="post" id="CreateSystem" data-stages-url="{% url 'data_loader:ajax_load_stages' %}">
     {% csrf_token %}

@@ -7,40 +7,40 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="">People</a>
+                        <a href="">Suppliers</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">People List</li>
+                    <li class="breadcrumb-item active" aria-current="page">Supplier List</li>
                 </ol>
             </nav>
         </div>
     
         <div class="col-md-2">
-            <a href="{%url 'data_loader:load_person'%}" class="btn btn-primary">Load Person</a>
+            <a href="{%url 'data_loader:load_supplier'%}" class="btn btn-primary">Load Supplier</a>
         </div> 
     </div>
 
     <div class="container">
-        {% if persons.count %}
+        {% if suppliers.count %}
         
         <table class="table table-stripped table-hover">
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Area</th>
-                    <th>Role</th>
+                    <th>Web</th>
                     <th>Mail</th>
+                    <th>Phone</th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for person in persons %}
+                {% for supplier in suppliers %}
                 <tr>
-                    <td>{{person.full_name}}</td>
-                    <td>{{person.area}}</td>
-                    <td>{{person.role}}</td>
-                    <td>{{person.mail}}</td>
-                    <td><a href="{% url 'data_loader:edit_person' person.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+                    <td>{{supplier.name}}</td>
+                    <td>{{supplier.web}}</td>
+                    <td>{{supplier.mail}}</td>
+                    <td>{{supplier.phone}}</td>
+                    <td><a href="{% url 'data_loader:edit_supplier' supplier.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

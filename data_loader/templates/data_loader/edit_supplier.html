@@ -9,18 +9,17 @@
                     <li class="breadcrumb-item">
                         <a href="">Suppliers</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Load Supplier</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Supplier</li>
                 </ol>
             </nav>
-        </div>
+        </div> 
     </div>
 </div>
 <div class="container">
 <form class="site-form" method="post">
     {% csrf_token %}
     {{form.as_p}}
-    <input type="submit" value="Create">
+    <input type="submit" value="Save">
 </form>
 </div>
-
 {%endblock%}
