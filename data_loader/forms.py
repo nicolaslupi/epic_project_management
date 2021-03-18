@@ -17,7 +17,7 @@ ROLES = [
     ('mech','Mech'),
 ]
 
-class DateTimeInput(forms.DateTimeInput):
+class DateInput(forms.DateInput):
     input_type = 'date'
 
 class CreateComponent(forms.ModelForm):
@@ -27,9 +27,9 @@ class CreateComponent(forms.ModelForm):
         fields = '__all__'
         
         widgets = {
-                'd_next':DateTimeInput(),
-                'd_done':DateTimeInput(),
-                'action_date':DateTimeInput(),
+                'd_next':DateInput(),
+                'd_done':DateInput(),
+                'action_date':DateInput(),
             }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,9 +49,9 @@ class CreateSystem(forms.ModelForm):
         model = models.System
         fields = '__all__'
         widgets = {
-                'd_next':DateTimeInput(),
-                'd_done':DateTimeInput(),
-                'action_date':DateTimeInput(),
+                'd_next':DateInput(),
+                'd_done':DateInput(),
+                'action_date':DateInput(),
             }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -71,9 +71,9 @@ class CreateProject(forms.ModelForm):
         model = models.Project
         fields = '__all__'
         widgets = {
-                'd_next':DateTimeInput(),
-                'd_done':DateTimeInput(),
-                'action_date':DateTimeInput(),
+                'd_next':DateInput(),
+                'd_done':DateInput(),
+                'action_date':DateInput(),
             }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
