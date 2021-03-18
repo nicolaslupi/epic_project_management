@@ -4,24 +4,11 @@
 <ul id="myUL">
   <li><span class="caret">Projects</span>
     <ul class="nested">
-        
-        <!-- First iterate over projects -->
         {% for key, value in data.items %}
             <li>{{key.name}}</li>
             {% include "recurse.html" %}
-            
-            
+
         {% endfor %}
-        
-        <!--{% for key, value in data.items %}
-            <li>{{key}}</li>
-            <li><span class="caret">Systems</span>
-                <ul class="nested">
-                    {% for system in value %}
-                        <li>{{system.name}}</li>
-                    {% endfor %}
-                </ul>
-        {% endfor %}-->
     </ul>
   </li>
 </ul>

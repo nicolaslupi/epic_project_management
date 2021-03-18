@@ -22,3 +22,6 @@
     clear: both;
   }
 
+  #myUL li{ 
+    padding-top:10px;
+}
