@@ -33,6 +33,7 @@
                     <th>D-Done</th>
                     <th>Action</th>
                     <th>Action Date</th>
+                    <th>Depends On</th>
                     <th>Assigned to Project</th>
                     <th></th>
                 </tr>
@@ -48,6 +49,7 @@
                     <td>{{system.d_done}}</td>
                     <td>{{system.action}}</td>
                     <td>{{system.action_date}}</td>
+                    <td>{{system.depends_on}}</td>
                     <td>{{system.assigned_to_project}}</td>
                     <td><a href="{% url 'data_loader:edit_system' system.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>

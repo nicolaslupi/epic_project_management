@@ -1,44 +1,28 @@
 {% extends 'base.html' %}
 
 {%block content%}
-<nav>
-    <ul>
-        <li><a href="{% url 'data_loader:load_component'%}">Load Component</li>
-        <li><a href="{% url 'data_loader:load_system'%}">Load System</li>
-        <li><a href="{% url 'data_loader:load_project'%}">Load Project</li>
-        <li><a href="{% url 'data_loader:load_person'%}">Load Person</li>
-        <li><a href="{% url 'data_loader:load_supplier'%}">Load Supplier</li>
-
-    </ul>
-</nav>
-{%endblock%}
-
-<!--<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Homepage</title>
-    </head>
-    <body>
-        <header class="wrapper">
-            <nav>
-                <ul>
-                    {% if user.is_authenticated %}
-                    <li>
-                        <form class="logout-link" action="{% url 'people:logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">Logout</button>
-                        </form>
-                    </li>
-                    {% else %}
-                    <li><a href="{% url 'people:login'%}">Login</a></li>
-                    <li><a href="{% url 'people:signup'%}">Signup</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </header>
+<ul id="myUL">
+  <li><span class="caret">Projects</span>
+    <ul class="nested">
         
-        <h1>Homepage</h1>
-        <p>Sub header</p>
-    </body>
-</html>-->
+        <!-- First iterate over projects -->
+        {% for key, value in data.items %}
+            <li>{{key.name}}</li>
+            {% include "recurse.html" %}
+            
+            
+        {% endfor %}
+        
+        <!--{% for key, value in data.items %}
+            <li>{{key}}</li>
+            <li><span class="caret">Systems</span>
+                <ul class="nested">
+                    {% for system in value %}
+                        <li>{{system.name}}</li>
+                    {% endfor %}
+                </ul>
+        {% endfor %}-->
+    </ul>
+  </li>
+</ul>
+{%endblock%}

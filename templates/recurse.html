@@ -1,0 +1,21 @@
+
+<li><span class="caret">Systems</li>
+    <ul class="nested">
+        {% for key2, value2 in value.items %}
+            <li>{{key2.name}}</li>
+            {% include "recurse.html" with value=value2 %}
+        {% endfor %}
+    </ul>
+
+
+
+<!--{% for menu in menu_list %}
+    <li>
+        {{ menu.name }}
+        {% if menu.submenus|length %}
+            <ul>
+                {% include "menu.html" with menu_list=menu.submenus %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}-->
