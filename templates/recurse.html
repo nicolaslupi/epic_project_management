@@ -4,7 +4,7 @@
     <li><span class="caret">Systems</li>
         <ul class="nested">
             {% for key2, value2 in value.items %}
-                <li>{{key2.name}}</li>
+                <li><a href="{% url 'data_loader:edit_system' key2.id %}">{{key2.name}} - {{key2.track}} - {{key2.stage}}</a> </li>
                 {% include "recurse.html" with value=value2 %}
                 
                 {% with components=assigned_components|get_item:key2.name %}
@@ -12,7 +12,7 @@
                 <li><span class="caret">Components</span></li>
                     <ul class="nested">
                     {% for component in components %}
-                        <li>{{component.name}}</li>
+                        <li><a href="{% url 'data_loader:edit_component' component.id %}">{{component.name}} {{component.type}} {{component.subtype}} - {{component.track}} - {{component.stage}}</a> </li>
                     {% endfor %}
                     </ul>
                 {% endif %}

@@ -5,7 +5,7 @@
   <li><span class="caret">Projects</span>
     <ul class="nested">
         {% for key, value in data.items %}
-            <li>{{key.name}}</li>
+            <li><a href="{% url 'data_loader:edit_project' key.id %}">{{key.name}} - {{key.track}} - {{key.stage}} </a></li>
             {% include "recurse.html" %}
 
         {% endfor %}
