@@ -12,6 +12,21 @@
     }
   }
 
+a {
+  color:#373a3c;
+}
+
+.green_tag {
+    background-color: #82E0AA ;
+  }
+
+.yellow_tag {
+  background-color: #F7DC6F;
+}
+
+.red_tag {
+  background-color: #F1948A;
+}
   .container {
     width: fit-content();
     clear: both;
