@@ -22,9 +22,10 @@
     <div class="container">
         {% if suppliers.count %}
         
-        <table class="table table-stripped table-hover">
+        <table id="myTable" class="table table-stripped table-hover">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Name</th>
                     <th>Web</th>
                     <th>Mail</th>
@@ -36,6 +37,7 @@
             <tbody>
                 {% for supplier in suppliers %}
                 <tr>
+                    <td>{{supplier.id}}</td>
                     <td>{{supplier.name}}</td>
                     <td>{{supplier.web}}</td>
                     <td>{{supplier.mail}}</td>
@@ -48,5 +50,11 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+    $(function() {
+        $("#myTable").tablesorter();
+    });
+</script>
 
 {% endblock %}

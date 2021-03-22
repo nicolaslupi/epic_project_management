@@ -22,9 +22,10 @@
     <div class="container">
         {% if persons.count %}
         
-        <table class="table table-stripped table-hover">
+        <table id="myTable" class="table table-stripped table-hover">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Name</th>
                     <th>Area</th>
                     <th>Role</th>
@@ -36,6 +37,7 @@
             <tbody>
                 {% for person in persons %}
                 <tr>
+                    <td>{{person.id}}</td>
                     <td>{{person.full_name}}</td>
                     <td>{{person.area}}</td>
                     <td>{{person.role}}</td>
@@ -48,5 +50,11 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+    $(function() {
+        $("#myTable").tablesorter();
+    });
+</script>
 
 {% endblock %}
