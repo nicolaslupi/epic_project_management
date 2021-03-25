@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from data_loader.models import *
+from definitions.models import *
 
 def dependencies(root):
     aux = dict()
@@ -12,6 +13,11 @@ def dependencies(root):
 def home(request):
     projects = Project.objects.all()
     res = dict()
+    tags = dict()
+    stages = Stage.objects.all()
+    for stage in stages:
+        tags[stage] = stage.tag
+
     for project in projects:
         assigned_systems = System.objects.filter(assigned_to_project = project.id, depends_on = None)
         aux = dict()
@@ -26,6 +32,7 @@ def home(request):
     context = {
         'data':res,
         'assigned_components':assigned_components,
+        'tags': tags,
     }
 
     return render(request, 'homepage.html', context)

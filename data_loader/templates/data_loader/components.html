@@ -23,9 +23,10 @@
     <div class="container">
         {% if components.count %}
         
-        <table class="table table-stripped table-hover">
+        <table id="myTable" class="table table-stripped table-hover">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Name</th>
                     <th>Type</th>
                     <th>Subtype</th>
@@ -44,6 +45,7 @@
             <tbody>
                 {% for component in components %}
                 <tr>
+                    <td>{{component.id}}</td>
                     <td>{{component.name}}</td>
                     <td>{{component.type}}</td>
                     <td>{{component.subtype}}</td>
@@ -65,6 +67,10 @@
 
 </div>
 
-   
+<script>
+    $(function() {
+        $("#myTable").tablesorter();
+    });
+</script>
 
 {% endblock %}

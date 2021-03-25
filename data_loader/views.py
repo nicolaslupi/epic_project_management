@@ -77,7 +77,7 @@ def edit_project(request, id):
     form = forms.CreateProject(request.POST or None, instance=project)
     if request.method == 'POST':
         form.save()
-        return redirect('data_loader:project')
+        return redirect('data_loader:projects')
     else:
         return render(request, 'data_loader/edit_project.html', {'form':form})
 

@@ -23,9 +23,10 @@
     <div class="container">
         {% if systems.count %}
         
-        <table class="table table-stripped table-hover">
+        <table id="myTable" class="table table-stripped table-hover">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Name</th>
                     <th>Track</th>
                     <th>Stage</th>
@@ -42,6 +43,7 @@
             <tbody>
                 {% for system in systems %}
                 <tr>
+                    <td>{{system.id}}</td>
                     <td>{{system.name}}</td>
                     <td>{{system.track}}</td>
                     <td>{{system.stage}}</td>
@@ -61,6 +63,11 @@
 
 </div>
 
+<script>
+    $(function() {
+        $("#myTable").tablesorter();
+    });
+</script>
    
 
 {% endblock %}
