@@ -8,20 +8,20 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="">Components</a>
+                        <a href="">Items</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Component List</li>
+                    <li class="breadcrumb-item active" aria-current="page">Item List</li>
                 </ol>
             </nav>
         </div>
     
         <div class="col-md-2">
-            <a href="{%url 'data_loader:load_component'%}" class="btn btn-primary">Load Component</a>
+            <a href="{%url 'data_loader:load_item'%}" class="btn btn-primary">Load Item</a>
         </div> 
     </div>
 
     <div class="container">
-        {% if components.count %}
+        {% if items.count %}
         
         <table id="myTable" class="table table-stripped table-hover">
             <thead>
@@ -43,21 +43,21 @@
             </thead>
 
             <tbody>
-                {% for component in components %}
+                {% for item in items %}
                 <tr>
-                    <td>{{component.id}}</td>
-                    <td>{{component.name}}</td>
-                    <td>{{component.type}}</td>
-                    <td>{{component.subtype}}</td>
-                    <td>{{component.track}}</td>
-                    <td>{{component.stage}}</td>
-                    <td>{{component.d_next}}</td>
-                    <td>{{component.d_done}}</td>
-                    <td>{{component.action}}</td>
-                    <td>{{component.action_date}}</td>
-                    <td>{{component.assigned_to_system}}</td>
-                    <td>{{component.supplied_by}}</td>
-                    <td><a href="{% url 'data_loader:edit_component' component.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.subtype}}</td>
+                    <td>{{item.track}}</td>
+                    <td>{{item.stage}}</td>
+                    <td>{{item.d_next}}</td>
+                    <td>{{item.d_done}}</td>
+                    <td>{{item.action}}</td>
+                    <td>{{item.action_date}}</td>
+                    <td>{{item.assigned_to_system}}</td>
+                    <td>{{item.supplied_by}}</td>
+                    <td><a href="{% url 'data_loader:edit_item' item.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -11,21 +11,21 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .serializers import *
 
-def components(request):
-    components_values = Item.objects.order_by('id')
-    context = {'components':components_values}
-    return render(request, 'data_loader/components.html', context)
+def items(request):
+    items_values = Item.objects.order_by('id')
+    context = {'items':items_values}
+    return render(request, 'data_loader/items.html', context)
 
-def edit_component(request, id):
+def edit_item(request, id):
     item = Item.objects.get(pk=id)
     form = forms.CreateItem(request.POST or None, instance=item)
     if request.method == 'POST':
         form.save()
-        return redirect('data_loader:components')
+        return redirect('data_loader:items')
     else:
-        return render(request, 'data_loader/edit_component.html', {'form':form})
+        return render(request, 'data_loader/edit_items.html', {'form':form})
 
-def load_component(request):
+def load_item(request):
     if request.method == 'POST':
         form = forms.CreateItem(request.POST)
         if form.is_valid():
@@ -38,10 +38,10 @@ def load_component(request):
             for i in range(repeat):
                 instance.pk = None
                 instance.save()
-            return redirect('data_loader:components')
+            return redirect('data_loader:items')
     else:
         form = forms.CreateItem()
-    return render(request, 'data_loader/load_component.html', {'form':form})
+    return render(request, 'data_loader/load_item.html', {'form':form})
 
 def systems(request):
     systems_values = System.objects.order_by('id')
@@ -151,10 +151,10 @@ def load_systems(request):
 #     return render(request, 'data_loader/stage_dropdown.html', {'stages': stages})
 #     # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
-class get_components(APIView):
+class get_items(APIView):
     def get(self, request):
-        components = Item.objects.all()
-        serializer = ItemSerializer(components, many=True)
+        items = Item.objects.all()
+        serializer = ItemSerializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class get_systems(APIView):

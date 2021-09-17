@@ -14,9 +14,9 @@ def home(request):
     projects = Project.objects.all()
     res = dict()
     tags = dict()
-    stages = Stage.objects.all()
-    for stage in stages:
-        tags[stage] = stage.tag
+    #stages = Stage.objects.all()
+    #for stage in stages:
+    #    tags[stage] = stage.tag
 
     for project in projects:
         assigned_systems = System.objects.filter(project = project.id, depends_on = None)

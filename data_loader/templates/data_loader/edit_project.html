@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <div class="container mt-4">
@@ -17,29 +16,10 @@
     </div>
 </div>
 <div class="container">
-    <form method="post" id="CreateProject" data-stages-url="{% url 'data_loader:ajax_load_stages' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save">
-    </form>
+<form class="site-form" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Save">
+</form>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-    $("#id_track").change(function () {
-        const url = $("#CreateProject").attr("data-stages-url");  // get the url of the `load_cities` view
-        const trackId = $(this).val();  // get the selected country ID from the HTML input
-
-        $.ajax({                       // initialize an AJAX request
-            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
-            data: {
-                'track_id': trackId       // add the country id to the GET parameters
-            },
-            success: function (data) {   // `data` is the return of the `load_cities` view function
-                $("#id_stage").html(data);  // replace the contents of the city input with the data that came from the server
-            }
-        });
-
-    });
-</script>
-{% endblock %}
+{%endblock%}

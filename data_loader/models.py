@@ -4,9 +4,9 @@ from django.db import models
 
 class Supplier(models.Model):
     name = models.CharField(max_length=100)
-    web = models.CharField(max_length=100)
-    mail = models.CharField(max_length=100, null=True)
-    phone = models.CharField(max_length=100, null=True)
+    web = models.CharField(max_length=100, blank=True, null=True)
+    mail = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -15,8 +15,8 @@ class Person(models.Model):
     full_name = models.CharField(max_length=100)
     area = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
-    mail = models.CharField(max_length=100, null=True)
-    phone = models.CharField(max_length=100, null=True)
+    mail = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.full_name
