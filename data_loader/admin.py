@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Component, System, Project, Person, Supplier
+from .models import Item, ItemType, System, Project, Person, Supplier
 # Register your models here.
 
-admin.site.register(Component)
+admin.site.register(Item)
+admin.site.register(ItemType)
 admin.site.register(System)
 admin.site.register(Project)
 admin.site.register(Person)

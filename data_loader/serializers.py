@@ -2,9 +2,14 @@
 from rest_framework import serializers
 from .models import *
 
-class ComponentSerializer(serializers.ModelSerializer):
+# class ComponentSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Component
+#         fields = '__all__'
+
+class ItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Component
+        model = Item
         fields = '__all__'
 
 class SystemSerializer(serializers.ModelSerializer):
