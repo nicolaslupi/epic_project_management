@@ -21,7 +21,8 @@ urlpatterns = [
     path('load_project/', views.load_project, name='load_project'),
     path('load_person/', views.load_person, name='load_person'),
     path('load_supplier/', views.load_supplier, name='load_supplier'),
-    path('ajax/load-stages/', views.load_stages, name='ajax_load_stages'), # AJAX
+    #path('ajax/load-stages/', views.load_stages, name='ajax_load_stages'), # AJAX
+    path('ajax/load-systems/', views.load_systems, name='ajax_load_systems'), # AJAX
     path("get_components/", views.get_components.as_view()),
     path("get_systems/", views.get_systems.as_view()),
     path("get_projects/", views.get_projects.as_view()),

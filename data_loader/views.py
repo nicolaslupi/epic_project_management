@@ -12,13 +12,13 @@ from rest_framework.views import APIView
 from .serializers import *
 
 def components(request):
-    components_values = Component.objects.order_by('id')
+    components_values = Item.objects.order_by('id')
     context = {'components':components_values}
     return render(request, 'data_loader/components.html', context)
 
 def edit_component(request, id):
-    component = Component.objects.get(pk=id)
-    form = forms.CreateComponent(request.POST or None, instance=component)
+    item = Item.objects.get(pk=id)
+    form = forms.CreateItem(request.POST or None, instance=item)
     if request.method == 'POST':
         form.save()
         return redirect('data_loader:components')
@@ -27,7 +27,7 @@ def edit_component(request, id):
 
 def load_component(request):
     if request.method == 'POST':
-        form = forms.CreateComponent(request.POST)
+        form = forms.CreateItem(request.POST)
         if form.is_valid():
             repeat = request.POST['repeat']
             if repeat == '':
@@ -40,7 +40,7 @@ def load_component(request):
                 instance.save()
             return redirect('data_loader:components')
     else:
-        form = forms.CreateComponent()
+        form = forms.CreateItem()
     return render(request, 'data_loader/load_component.html', {'form':form})
 
 def systems(request):
@@ -140,16 +140,21 @@ def suppliers(request):
     return render(request, 'data_loader/suppliers.html', context)
 
 # AJAX
-def load_stages(request):
-    track_id = request.GET.get('track_id')
-    stages = Stage.objects.filter(track_id=track_id).all()
-    return render(request, 'data_loader/stage_dropdown.html', {'stages': stages})
-    # return JsonResponse(list(cities.values('id', 'name')), safe=False)
+def load_systems(request):
+    project_id = request.GET.get('project')
+    systems = System.objects.filter(project = project_id).all()
+    return render(request, 'data_loader/system_dropdown.html', {'systems': systems})
+
+# def load_stages(request):
+#     track_id = request.GET.get('track_id')
+#     stages = Stage.objects.filter(track_id=track_id).all()
+#     return render(request, 'data_loader/stage_dropdown.html', {'stages': stages})
+#     # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
 class get_components(APIView):
     def get(self, request):
-        components = Component.objects.all()
-        serializer = ComponentSerializer(components, many=True)
+        components = Item.objects.all()
+        serializer = ItemSerializer(components, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class get_systems(APIView):

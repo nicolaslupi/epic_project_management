@@ -3,6 +3,7 @@
 from django import forms
 from django.forms import ModelForm
 from . import models
+from .models import System, Project
 #from definitions.models import Track, Stage
 
 AREAS = [
@@ -33,6 +34,18 @@ class CreateItem(forms.ModelForm):
         #     }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['system'].queryset = System.objects.none()
+
+        if 'project' in self.data:
+            try:
+                project_id = int(self.data.get('project'))
+                self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
+        
+        
         # self.fields['stage'].queryset = Stage.objects.none()
 
         # if 'track' in self.data:
@@ -55,7 +68,7 @@ class CreateSystem(forms.ModelForm):
         #     }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['stage'].queryset = Stage.objects.none()
+        #self.fields['stage'].queryset = Stage.objects.none()
 
         # if 'track' in self.data:
         #     try:

@@ -30,7 +30,7 @@ class Project(models.Model):
     #action = models.CharField(max_length=100, blank=True)
     #action_date = models.DateField(null=True, blank=True)
     depends_on = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
-    assigned_to_person = models.ManyToManyField(Person)
+    person = models.ManyToManyField(Person)
 
     def __str__(self):
         return self.name
@@ -44,8 +44,8 @@ class System(models.Model):
     # action = models.CharField(max_length=100, blank=True)
     # action_date = models.DateField(null=True, blank=True)
     depends_on = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
-    assigned_to_person = models.ManyToManyField(Person)
-    assigned_to_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
+    person = models.ManyToManyField(Person)
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -68,10 +68,11 @@ class Item(models.Model):
     # d_done = models.DateField(null=True)
     # action = models.CharField(max_length=100, blank=True)
     # action_date = models.DateField(null=True, blank=True)
-    assigned_to_person = models.ManyToManyField(Person)
-    assigned_to_system = models.ForeignKey(System, on_delete=models.SET_NULL, null=True, blank=True)
+    person = models.ManyToManyField(Person)
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
+    system = models.ForeignKey(System, on_delete=models.SET_NULL, null=True, blank=True)
     supplied_by = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        #title = self.name + ' ' + self.type + ' ' + self.subtype + ' ' + self.assigned_to_system.name
-        return self.name
+        title = self.type.name + ' ' + self.project.name + ' ' + self.system.name
+        return title

@@ -19,19 +19,22 @@ def home(request):
         tags[stage] = stage.tag
 
     for project in projects:
-        assigned_systems = System.objects.filter(assigned_to_project = project.id, depends_on = None)
+        assigned_systems = System.objects.filter(project = project.id, depends_on = None)
         aux = dict()
         for root in assigned_systems:
             aux[root] = dependencies(root)
         
-        assigned_components = dict()
-        for system in System.objects.all():
-            assigned_components[system.name] = Component.objects.filter(assigned_to_system = system.id)
+        
+        assigned_items = {system.name: Item.objects.filter(system=system.id) for system in System.objects.all()}
+        
+        # assigned_items = dict()
+        # for system in System.objects.all():
+        #     assigned_items[system.name] = Item.objects.filter(assigned_to_system = system.id)
         res[project] = aux
     
     context = {
         'data':res,
-        'assigned_components':assigned_components,
+        'assigned_items':assigned_items,
         'tags': tags,
     }
 
