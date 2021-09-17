@@ -27,16 +27,12 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
                     <th>Type</th>
-                    <th>Subtype</th>
-                    <th>Track</th>
-                    <th>Stage</th>
-                    <th>D-Next</th>
-                    <th>D-Done</th>
-                    <th>Action</th>
-                    <th>Action Date</th>
-                    <th>Assigned to System</th>
+                    <th>Description</th>
+                    <th>Comments</th>
+                    <th>Project</th>
+                    <th>System</th>
+                    <th>Ordered By</th>
                     <th>Supplier</th>
                     <th></th>
                 </tr>
@@ -46,16 +42,12 @@
                 {% for item in items %}
                 <tr>
                     <td>{{item.id}}</td>
-                    <td>{{item.name}}</td>
                     <td>{{item.type}}</td>
-                    <td>{{item.subtype}}</td>
-                    <td>{{item.track}}</td>
-                    <td>{{item.stage}}</td>
-                    <td>{{item.d_next}}</td>
-                    <td>{{item.d_done}}</td>
-                    <td>{{item.action}}</td>
-                    <td>{{item.action_date}}</td>
-                    <td>{{item.assigned_to_system}}</td>
+                    <td>{{item.description}}</td>
+                    <td>{{item.commnets}}</td>
+                    <td>{{item.project}}</td>
+                    <td>{{item.system}}</td>
+                    <td>{{item.id}}</td>
                     <td>{{item.supplied_by}}</td>
                     <td><a href="{% url 'data_loader:edit_item' item.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
