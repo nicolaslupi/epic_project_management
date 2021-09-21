@@ -19,7 +19,8 @@ ROLES = [
 
 class DateInput(forms.DateInput):
     input_type = 'date'
-
+    size=1
+    
 class CreateItem(forms.ModelForm):
     repeat = forms.IntegerField(required=False)
     
@@ -31,7 +32,8 @@ class CreateItem(forms.ModelForm):
         widgets = {
             'load_date':DateInput(),
             'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            'comments':forms.Textarea(attrs={'rows':1, 'cols':15})
+            'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
+            #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
         }
 
     def __init__(self, *args, **kwargs):

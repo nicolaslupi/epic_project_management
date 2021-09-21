@@ -27,9 +27,6 @@ def home(request):
         
         assigned_items = {system.name: Item.objects.filter(system=system.id) for system in System.objects.all()}
         
-        # assigned_items = dict()
-        # for system in System.objects.all():
-        #     assigned_items[system.name] = Item.objects.filter(assigned_to_system = system.id)
         res[project] = aux
     
     context = {
