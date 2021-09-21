@@ -20,7 +20,7 @@ def items(request):
     filtros = ItemFilter(request.GET, queryset=items_values)
     items_values = filtros.qs
     
-    paginator = Paginator(items_values, 5)
+    paginator = Paginator(items_values, 20)
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator, page_number)
     
@@ -55,6 +55,7 @@ def load_item(request):
                 if instance.load_date == None:
                     instance.load_date = datetime.now().date()
                 instance.save()
+                form.save_m2m()
             return redirect('data_loader:items')
     else:
         form = forms.CreateItem()

@@ -28,12 +28,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Track</th>
-                    <th>Stage</th>
-                    <th>D-Next</th>
-                    <th>D-Done</th>
-                    <th>Action</th>
-                    <th>Action Date</th>
                     <th>Depends On</th>
                     <th>Assigned to Project</th>
                     <th></th>
@@ -45,14 +39,8 @@
                 <tr>
                     <td>{{system.id}}</td>
                     <td>{{system.name}}</td>
-                    <td>{{system.track}}</td>
-                    <td>{{system.stage}}</td>
-                    <td>{{system.d_next}}</td>
-                    <td>{{system.d_done}}</td>
-                    <td>{{system.action}}</td>
-                    <td>{{system.action_date}}</td>
                     <td>{{system.depends_on}}</td>
-                    <td>{{system.assigned_to_project}}</td>
+                    <td>{{system.project}}</td>
                     <td><a href="{% url 'data_loader:edit_system' system.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}

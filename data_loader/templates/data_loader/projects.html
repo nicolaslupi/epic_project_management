@@ -28,12 +28,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Track</th>
-                    <th>Stage</th>
-                    <th>D-Next</th>
-                    <th>D-Done</th>
-                    <th>Action</th>
-                    <th>Action Date</th>
+                    <th>Depdends On</th>
                     <th></th>
                 </tr>
             </thead>
@@ -43,12 +38,7 @@
                 <tr>
                     <td>{{project.id}}</td>
                     <td>{{project.name}}</td>
-                    <td>{{project.track}}</td>
-                    <td>{{project.stage}}</td>
-                    <td>{{project.d_next}}</td>
-                    <td>{{project.d_done}}</td>
-                    <td>{{project.action}}</td>
-                    <td>{{project.action_date}}</td>
+                    <td>{{project.depends_on}}</td>
                     <td><a href="{% url 'data_loader:edit_project' project.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}
