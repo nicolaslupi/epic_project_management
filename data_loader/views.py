@@ -12,9 +12,23 @@ from rest_framework.views import APIView
 from .serializers import *
 from datetime import datetime
 
+from .filters import ItemFilter
+from django.core.paginator import Paginator
+
 def items(request):
     items_values = Item.objects.order_by('id')
-    context = {'items':items_values}
+    filtros = ItemFilter(request.GET, queryset=items_values)
+    items_values = filtros.qs
+    
+    paginator = Paginator(items_values, 5)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    
+    context = {
+        'items':items_values,
+        'page_obj':page_obj,
+        'filtros':filtros
+        }
     return render(request, 'data_loader/items.html', context)
 
 def edit_item(request, id):

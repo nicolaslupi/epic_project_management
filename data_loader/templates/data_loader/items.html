@@ -20,6 +20,19 @@
         </div> 
     </div>
 
+    <div class='row'>
+        <div class='col'>
+            <div class='card card-body'>
+                <form method='get'>
+                    {{filtros.form}}
+                <button class='btn btn-primary' type='submit'> Search </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
     <div class="container">
         {% if items.count %}
         
@@ -39,7 +52,7 @@
             </thead>
 
             <tbody>
-                {% for item in items %}
+                {% for item in page_obj %}
                 <tr>
                     <td>{{item.id}}</td>
                     <td>{{item.type}}</td>
@@ -56,6 +69,32 @@
         </table>
         {% endif %}
     </div>
+
+    <div class="">
+        Showing Page{{page_obj.number}} of {{page_obj.paginator.num_pages}}
+    </div>
+
+    <ul class="pagination align-right float-right mr-auto">
+        {% if page_obj.has_previous %}
+        <li {%if page_obj.number == 1%} class="page-item active" {%endif%}>
+            <a class="page-link" href='?page=1'>&laquo; 1</a>
+        </li>
+        <li class='page-item'>
+            <a class='page-link' href='?page={{page_obj.previous_page_number}}'>Previous</a>
+        </li>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+        <li class='page-item'>
+            <a class='page-link' href='?page={{page_obj.next_page_number}}'>Next</a>
+        </li>
+        <li class='page-item'>
+            <a class='page-link' href='?page={{page_obj.paginator.num_pages}}'>{{page_obj.paginator.num_pages}} &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+
+
 
 </div>
 
