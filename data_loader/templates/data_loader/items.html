@@ -32,7 +32,7 @@
                     <th>Comments</th>
                     <th>Project</th>
                     <th>System</th>
-                    <th>Ordered By</th>
+                    <th>Load Date</th>
                     <th>Supplier</th>
                     <th></th>
                 </tr>
@@ -47,7 +47,7 @@
                     <td>{{item.commnets}}</td>
                     <td>{{item.project}}</td>
                     <td>{{item.system}}</td>
-                    <td>{{item.id}}</td>
+                    <td>{{item.load_date}}</td>
                     <td>{{item.supplied_by}}</td>
                     <td><a href="{% url 'data_loader:edit_item' item.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>

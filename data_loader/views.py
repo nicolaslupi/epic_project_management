@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from .serializers import *
+from datetime import datetime
 
 def items(request):
     items_values = Item.objects.order_by('id')
@@ -37,6 +38,8 @@ def load_item(request):
             instance = form.save(commit=False)
             for i in range(repeat):
                 instance.pk = None
+                if instance.load_date == None:
+                    instance.load_date = datetime.now().date()
                 instance.save()
             return redirect('data_loader:items')
     else:
