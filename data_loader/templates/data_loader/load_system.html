@@ -16,10 +16,29 @@
     </div>
 </div>
 <div class="container">
-<form class="site-form" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Create">
-</form>
+    <form method="post" id="CreateSystem" data-systems-url="{% url 'data_loader:ajax_load_systems' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class='col-md-2'><input type="submit" value="Submit"></div>
+    </form>
 </div>
-{%endblock%}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_project").change(function () {
+        const url = $("#CreateSystem").attr("data-systems-url");  // get the url of the `load_cities` view
+        const projectId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'project': projectId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_depends_on").html(data);  // replace the contents of the city input with the data that came from the server
+            }
+        });
+
+    });
+</script>
+{% endblock %}

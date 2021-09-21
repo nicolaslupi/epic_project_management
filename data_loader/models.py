@@ -43,10 +43,10 @@ class System(models.Model):
     # d_done = models.DateField(null=True)
     # action = models.CharField(max_length=100, blank=True)
     # action_date = models.DateField(null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
     depends_on = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
     person = models.ManyToManyField(Person)
-    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
-
+    
     def __str__(self):
         return self.name
 

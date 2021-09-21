@@ -24,7 +24,6 @@ class DateInput(forms.DateInput):
 class CreateItem(forms.ModelForm):
     repeat = forms.IntegerField(required=False)
     
-
     class Meta:
         model = models.Item
         fields = '__all__'
@@ -61,6 +60,17 @@ class CreateSystem(forms.ModelForm):
         #     }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['depends_on'].queryset = System.objects.none()
+
+        if 'project' in self.data:
+            try:
+                project_id = int(self.data.get('project'))
+                self.fields['depends_on'].queryset = System.objects.filter(project = project_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['depends_on'].queryset = self.instance.project.depends_on_set.order_by('name')
+        
         #self.fields['stage'].queryset = Stage.objects.none()
 
         # if 'track' in self.data:
