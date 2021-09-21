@@ -69,7 +69,7 @@ class CreateSystem(forms.ModelForm):
             except (ValueError, TypeError):
                 pass
         elif self.instance.pk:
-            self.fields['depends_on'].queryset = self.instance.project.depends_on_set.order_by('name')
+            self.fields['depends_on'].queryset = self.instance.project.system_set.order_by('name')
         
         #self.fields['stage'].queryset = Stage.objects.none()
 

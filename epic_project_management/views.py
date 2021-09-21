@@ -23,13 +23,13 @@ def home(request):
     for root_project in root_projects:
         assigned_projects = Project.objects.filter(depends_on = root_project.id)
 
-        
 
     for project in projects:
         assigned_systems = System.objects.filter(project = project.id, depends_on = None)
         aux = {root: dependencies(root) for root in assigned_systems}
         res[project] = aux
 
+    #assigned_items = {str(system.id) + '-' + system.name: Item.objects.filter(system=system.id) for system in System.objects.all()}
     assigned_items = {system.name: Item.objects.filter(system=system.id) for system in System.objects.all()}
     
     context = {

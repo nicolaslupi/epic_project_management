@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <div class="container mt-4">
@@ -20,7 +19,7 @@
     <form method="post" id="CreateItem" data-systems-url="{% url 'data_loader:ajax_load_systems' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Save">
+        <div class='col-md-2'><input type="submit" value="Save"></div>
     </form>
 </div>
 
