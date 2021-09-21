@@ -27,6 +27,10 @@ class CreateItem(forms.ModelForm):
         model = models.Item
         fields = '__all__'
         
+        widgets = {
+            'load_date':DateInput()
+        }
+
         # widgets = {
         #         'd_next':DateInput(),
         #         'd_done':DateInput(),

@@ -68,6 +68,7 @@ class Item(models.Model):
     # d_done = models.DateField(null=True)
     # action = models.CharField(max_length=100, blank=True)
     # action_date = models.DateField(null=True, blank=True)
+    load_date = models.DateField(auto_now=True, null=True, blank=True)
     person = models.ManyToManyField(Person)
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
     system = models.ForeignKey(System, on_delete=models.SET_NULL, null=True, blank=True)
