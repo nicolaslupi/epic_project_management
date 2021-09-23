@@ -20,7 +20,14 @@ ROLES = [
 class DateInput(forms.DateInput):
     input_type = 'date'
     size=1
-    
+
+class GetItem(forms.ModelForm):
+    class Meta:
+        model = models.Item
+        fields = ['type']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
 class CreateItem(forms.ModelForm):
     repeat = forms.IntegerField(required=False)
     
@@ -38,7 +45,7 @@ class CreateItem(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['system'].queryset = System.objects.none()
-
+        
         if 'project' in self.data:
             try:
                 project_id = int(self.data.get('project'))
@@ -48,6 +55,36 @@ class CreateItem(forms.ModelForm):
         elif self.instance.pk:
             self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
     
+class CreateAtornillador(forms.ModelForm):
+    class Meta:
+        model = models.Atornillador
+        fields = '__all__'
+        #exclude = ['type']
+        
+        widgets = {
+            'load_date':DateInput(),
+            'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
+            'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
+            #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+class CreateCapacitor(forms.ModelForm):
+    class Meta:
+        model = models.Capacitor
+        fields = '__all__'
+
+        widgets = {
+            'load_date':DateInput(),
+            'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
+            'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
+            #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 class CreateSystem(forms.ModelForm):
     class Meta:

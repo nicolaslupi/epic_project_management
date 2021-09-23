@@ -40,26 +40,59 @@ def edit_item(request, id):
     else:
         return render(request, 'data_loader/edit_items.html', {'form':form})
 
-def load_item(request):
+# def load_item(request):
+#     if request.method == 'POST':
+#         form = forms.CreateItem(request.POST)
+#         if form.is_valid():
+#             repeat = request.POST['repeat']
+#             if repeat == '':
+#                 repeat = 1
+#             else:
+#                 repeat = int(repeat)
+#             instance = form.save(commit=False)
+#             for i in range(repeat):
+#                 instance.pk = None
+#                 if instance.load_date == None:
+#                     instance.load_date = datetime.now().date()
+#                 instance.save()
+#                 form.save_m2m()
+#             return redirect('data_loader:items')
+#     else:
+#         form = forms.CreateItem()
+#     return render(request, 'data_loader/load_item.html', {'form':form})
+
+def get_type(request):
     if request.method == 'POST':
-        form = forms.CreateItem(request.POST)
+        form = forms.GetItem(request.POST, list(forms_dict.keys()))
         if form.is_valid():
-            repeat = request.POST['repeat']
-            if repeat == '':
-                repeat = 1
-            else:
-                repeat = int(repeat)
-            instance = form.save(commit=False)
-            for i in range(repeat):
-                instance.pk = None
-                if instance.load_date == None:
-                    instance.load_date = datetime.now().date()
-                instance.save()
-                form.save_m2m()
-            return redirect('data_loader:items')
+            type = request.POST['type']
+            print(type)
+            return load_item(request, ItemType.objects.get(pk=type).name)
     else:
-        form = forms.CreateItem()
+        form = forms.GetItem()
     return render(request, 'data_loader/load_item.html', {'form':form})
+
+forms_dict = {
+    'Atornillador':forms.CreateAtornillador,
+    'Capacitor':forms.CreateCapacitor
+    }
+
+def load_item(request, type):
+    if request.method == 'POST':
+        form = forms_dict[type](request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.type = type
+            instance.pk = None
+            if instance.load_date == None:
+                instance.load_date = datetime.now().date()
+            instance.save()
+            form.save_m2m()
+            return redirect('data_loader:items')    
+    else:
+        form = forms_dict[type]()
+    return render(request, 'data_loader/load_item.html', {'form':form})
+
 
 def systems(request):
     systems_values = System.objects.order_by('id')

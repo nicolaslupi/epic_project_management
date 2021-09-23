@@ -16,7 +16,8 @@ urlpatterns = [
     path('projects/', views.projects, name='projects'),
     path('persons/', views.persons, name='persons'),
     path('suppliers/', views.suppliers, name='suppliers'),
-    path('load_item/', views.load_item, name='load_item'),
+    #path('load_item/', views.load_item, name='load_item'),
+    path('load_item/', views.get_type, name='load_item'),
     path('load_system/', views.load_system, name='load_system'),
     path('load_project/', views.load_project, name='load_project'),
     path('load_person/', views.load_person, name='load_person'),
@@ -27,4 +28,5 @@ urlpatterns = [
     path("get_systems/", views.get_systems.as_view()),
     path("get_projects/", views.get_projects.as_view()),
     path("get_persons/", views.get_persons.as_view()),
+    #path('load_atornillador/', views.load_atornillador, name='load_atornillador')
 ]
