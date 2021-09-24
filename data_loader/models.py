@@ -2,6 +2,11 @@
 from django.db import models
 #from definitions.models import Track, Stage
 
+ITEM_TYPES = [
+    ('Atornillador','Atornillador'),
+    ('Capacitor','Capacitor')
+]
+
 class Supplier(models.Model):
     name = models.CharField(max_length=100)
     web = models.CharField(max_length=100, blank=True, null=True)
@@ -62,7 +67,8 @@ class ItemType(models.Model):
         return self.name
 
 class Item(models.Model):
-    type = models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
+    #type = models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
+    type = models.CharField(max_length=100, choices=ITEM_TYPES, blank=True, null=True)
 
     #type = models.ForeignKey(Atornillador, on_delete=models.SET_NULL, null=True)
 

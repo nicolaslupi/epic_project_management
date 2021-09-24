@@ -4,10 +4,7 @@ from data_loader.models import *
 from definitions.models import *
 
 def dependencies(root):
-    aux = dict()
-    sub_systems = System.objects.filter(depends_on = root.id)
-    for system in sub_systems:
-        aux[system] = dependencies(system)
+    aux = {system: dependencies(system) for system in System.objects.filter(depends_on = root.id)}
     return aux
 
 def home(request):

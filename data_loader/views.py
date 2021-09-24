@@ -15,6 +15,11 @@ from datetime import datetime
 from .filters import ItemFilter
 from django.core.paginator import Paginator
 
+items_dict = {
+    'Atornillador':[forms.CreateAtornillador, Atornillador],
+    'Capacitor':[forms.CreateCapacitor, Capacitor]
+    }
+
 def items(request):
     items_values = Item.objects.order_by('id')
     filtros = ItemFilter(request.GET, queryset=items_values)
@@ -31,9 +36,11 @@ def items(request):
         }
     return render(request, 'data_loader/items.html', context)
 
-def edit_item(request, id):
-    item = Item.objects.get(pk=id)
-    form = forms.CreateItem(request.POST or None, instance=item)
+def edit_item(request, id, type):
+    item = items_dict[type][1].objects.get(item_ptr = id)
+    form = items_dict[type][0](request.POST or None, instance = item)
+    #item = Item.objects.get(pk=id)
+    #form = forms.CreateItem(request.POST or None, instance=item)
     if request.method == 'POST':
         form.save()
         return redirect('data_loader:items')
@@ -63,23 +70,20 @@ def edit_item(request, id):
 
 def get_type(request):
     if request.method == 'POST':
-        form = forms.GetItem(request.POST, list(forms_dict.keys()))
+        form = forms.GetItem(request.POST)
         if form.is_valid():
             type = request.POST['type']
-            print(type)
-            return load_item(request, ItemType.objects.get(pk=type).name)
+            #return load_item(request, ItemType.objects.get(pk=type).name)
+            return load_item(request, type)
     else:
         form = forms.GetItem()
     return render(request, 'data_loader/load_item.html', {'form':form})
 
-forms_dict = {
-    'Atornillador':forms.CreateAtornillador,
-    'Capacitor':forms.CreateCapacitor
-    }
+
 
 def load_item(request, type):
     if request.method == 'POST':
-        form = forms_dict[type](request.POST)
+        form = items_dict[type][0](request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.type = type
@@ -90,7 +94,7 @@ def load_item(request, type):
             form.save_m2m()
             return redirect('data_loader:items')    
     else:
-        form = forms_dict[type]()
+        form = items_dict[type][0]()
     return render(request, 'data_loader/load_item.html', {'form':form})
 
 

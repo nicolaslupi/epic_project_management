@@ -25,8 +25,7 @@ class GetItem(forms.ModelForm):
     class Meta:
         model = models.Item
         fields = ['type']
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        
 
 class CreateItem(forms.ModelForm):
     repeat = forms.IntegerField(required=False)
@@ -75,6 +74,7 @@ class CreateCapacitor(forms.ModelForm):
     class Meta:
         model = models.Capacitor
         fields = '__all__'
+        #exclude = ['type']
 
         widgets = {
             'load_date':DateInput(),

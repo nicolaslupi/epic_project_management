@@ -62,7 +62,7 @@
                     <td>{{item.system}}</td>
                     <td>{{item.load_date}}</td>
                     <td>{{item.supplied_by}}</td>
-                    <td><a href="{% url 'data_loader:edit_item' item.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+                    <td><a href="{% url 'data_loader:edit_item' item.id item.type%}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
