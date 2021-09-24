@@ -41,7 +41,10 @@
                     <td>{{system.name}}</td>
                     <td>{{system.parent.name}}</td>
                     <td>{{system.project}}</td>
-                    <td><a href="{% url 'data_loader:edit_system' system.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+                    <td>
+                        <a href="{% url 'data_loader:view_system' system.id %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'data_loader:edit_system' system.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

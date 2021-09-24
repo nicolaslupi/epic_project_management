@@ -42,7 +42,10 @@
                     <td>{{supplier.web}}</td>
                     <td>{{supplier.mail}}</td>
                     <td>{{supplier.phone}}</td>
-                    <td><a href="{% url 'data_loader:edit_supplier' supplier.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
+                    <td>
+                        <a href="{% url 'data_loader:view_supplier' supplier.id %}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'data_loader:edit_supplier' supplier.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

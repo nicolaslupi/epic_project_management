@@ -122,6 +122,26 @@ def load_system(request):
         form = forms.CreateSystem()
     return render(request, 'data_loader/load_system.html', {'form':form})
 
+def view_system(request, id):
+    selected_system = System.objects.get(pk=id)
+    descendents = selected_system.get_descendants(include_self = True)
+    items_values = Item.objects.filter(system__in = descendents).order_by('id')
+
+    filtros = ItemFilter(request.GET, queryset=items_values)
+    items_values = filtros.qs
+    
+    paginator = Paginator(items_values, 20)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    
+    context = {
+        'items':items_values,
+        'page_obj':page_obj,
+        'filtros':filtros
+        }
+    return render(request, 'data_loader/items.html', context)
+
+
 def projects(request):
     projects_values = Project.objects.order_by('id')
     context = {'projects':projects_values}
@@ -152,8 +172,8 @@ def view_project(request, id):
     items_values = Item.objects.filter(project__in = descendents).order_by('id')
 
 
-    #filtros = ItemFilter(request.GET, queryset=items_values)
-    #items_values = filtros.qs
+    filtros = ItemFilter(request.GET, queryset=items_values)
+    items_values = filtros.qs
     
     paginator = Paginator(items_values, 20)
     page_number = request.GET.get('page')
@@ -162,7 +182,7 @@ def view_project(request, id):
     context = {
         'items':items_values,
         'page_obj':page_obj,
-        #'filtros':filtros
+        'filtros':filtros
         }
     return render(request, 'data_loader/items.html', context)
 
@@ -191,6 +211,25 @@ def load_person(request):
         form = forms.CreatePerson()
     return render(request,'data_loader/load_person.html', {'form':form})
 
+def view_person(request, id):
+    selected_person = Person.objects.get(pk=id)
+    items_values = Item.objects.filter(person = selected_person).order_by('id')
+
+    filtros = ItemFilter(request.GET, queryset=items_values)
+    items_values = filtros.qs
+    
+    paginator = Paginator(items_values, 20)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    
+    context = {
+        'items':items_values,
+        'page_obj':page_obj,
+        'filtros':filtros
+        }
+    return render(request, 'data_loader/items.html', context)
+
+
 def load_supplier(request):
     if request.method == 'POST':
         form = forms.CreateSupplier(request.POST)
@@ -214,6 +253,25 @@ def suppliers(request):
     suppliers_values = Supplier.objects.order_by('id')
     context = {'suppliers':suppliers_values}
     return render(request, 'data_loader/suppliers.html', context)
+
+def view_supplier(request, id):
+    selected_supplier = Supplier.objects.get(pk=id)
+    items_values = Item.objects.filter(supplied_by = selected_supplier).order_by('id')
+
+    filtros = ItemFilter(request.GET, queryset=items_values)
+    items_values = filtros.qs
+    
+    paginator = Paginator(items_values, 20)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    
+    context = {
+        'items':items_values,
+        'page_obj':page_obj,
+        'filtros':filtros
+        }
+    return render(request, 'data_loader/items.html', context)
+
 
 # AJAX
 def load_systems(request):
