@@ -39,7 +39,7 @@
                 <tr>
                     <td>{{system.id}}</td>
                     <td>{{system.name}}</td>
-                    <td>{{system.depends_on}}</td>
+                    <td>{{system.parent.name}}</td>
                     <td>{{system.project}}</td>
                     <td><a href="{% url 'data_loader:edit_system' system.id %}" class="btn btn-secondary btn-sm">Edit</a></td>
                 </tr>

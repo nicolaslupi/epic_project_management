@@ -1,5 +1,6 @@
 """ DATA MODELS """
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
 #from definitions.models import Track, Stage
 
 ITEM_TYPES = [
@@ -26,7 +27,7 @@ class Person(models.Model):
     def __str__(self):
         return self.full_name
 
-class Project(models.Model):
+class Project(MPTTModel):
     name = models.CharField(max_length=100)
     #track = models.ForeignKey(Track, on_delete=models.SET_NULL, null=True)
     #stage = models.ForeignKey(Stage, on_delete=models.SET_NULL, null=True)
@@ -34,16 +35,20 @@ class Project(models.Model):
     #d_done = models.DateField(null=True)
     #action = models.CharField(max_length=100, blank=True)
     #action_date = models.DateField(null=True, blank=True)
-    depends_on = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     person = models.ManyToManyField(Person)
 
-    def __str__(self):
-        if self.depends_on:
-            return self.name + ' - ' + self.depends_on.name
-        else:
-            return self.name
+    class MPTTMeta:
+        oreder_insertion_by = ['name']
 
-class System(models.Model):
+    def __str__(self):
+        return self.name
+    #    if self.depends_on:
+    #        return self.name + ' - ' + self.depends_on.name
+    #    else:
+    #        return self.name
+
+class System(MPTTModel):
     name = models.CharField(max_length=100)
     # track = models.ForeignKey(Track, on_delete=models.SET_NULL, null=True)
     # stage = models.ForeignKey(Stage, on_delete=models.SET_NULL, null=True)
@@ -52,14 +57,15 @@ class System(models.Model):
     # action = models.CharField(max_length=100, blank=True)
     # action_date = models.DateField(null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
-    depends_on = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     person = models.ManyToManyField(Person)
     
     def __str__(self):
-        if self.depends_on:
-            return self.name + ' - ' + self.depends_on.name + ' - ' + self.project.name
-        else:
-            return self.name + ' - ' + self.project.name
+        return self.name
+    #    if self.depends_on:
+    #        return self.name + ' - ' + self.depends_on.name + ' - ' + self.project.name
+    #    else:
+    #        return self.name + ' - ' + self.project.name
 
 class ItemType(models.Model):
     name = models.CharField(max_length=100)
@@ -88,7 +94,7 @@ class Item(models.Model):
     supplied_by = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        title = self.type.name + ' - ' + self.project.name + ' - ' + self.system.name
+        title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
         return title
 
 # Van a tener un campo llamado item_ptr

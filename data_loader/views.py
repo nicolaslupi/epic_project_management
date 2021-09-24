@@ -146,6 +146,27 @@ def load_project(request):
         form = forms.CreateProject()
     return render(request, 'data_loader/load_project.html', {'form':form})
 
+def view_project(request, id):
+    selected_project = Project.objects.get(pk=id)
+    descendents = selected_project.get_descendants(include_self = True)
+    items_values = Item.objects.filter(project__in = descendents).order_by('id')
+
+
+    #filtros = ItemFilter(request.GET, queryset=items_values)
+    #items_values = filtros.qs
+    
+    paginator = Paginator(items_values, 20)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    
+    context = {
+        'items':items_values,
+        'page_obj':page_obj,
+        #'filtros':filtros
+        }
+    return render(request, 'data_loader/items.html', context)
+
+
 def persons(request):
     persons_values = Person.objects.order_by('id')
     context = {'persons':persons_values}

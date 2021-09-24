@@ -29,4 +29,5 @@ urlpatterns = [
     path("get_projects/", views.get_projects.as_view()),
     path("get_persons/", views.get_persons.as_view()),
     #path('load_atornillador/', views.load_atornillador, name='load_atornillador')
+    path('view_project/<int:id>', views.view_project, name='view_project')
 ]

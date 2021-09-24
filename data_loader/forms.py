@@ -97,16 +97,16 @@ class CreateSystem(forms.ModelForm):
         #     }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['depends_on'].queryset = System.objects.none()
+        self.fields['parent'].queryset = System.objects.none()
 
         if 'project' in self.data:
             try:
                 project_id = int(self.data.get('project'))
-                self.fields['depends_on'].queryset = System.objects.filter(project = project_id).order_by('name')
+                self.fields['parent'].queryset = System.objects.filter(project = project_id).order_by('name')
             except (ValueError, TypeError):
                 pass
         elif self.instance.pk:
-            self.fields['depends_on'].queryset = self.instance.project.system_set.order_by('name')
+            self.fields['parent'].queryset = self.instance.project.system_set.order_by('name')
         
         #self.fields['stage'].queryset = Stage.objects.none()
 
