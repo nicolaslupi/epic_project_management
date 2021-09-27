@@ -16,10 +16,11 @@
             <li><span class="caret">Items</span>
                 <ul class="nested">
                 {% for item in items %}
+                    
                     {% comment %}
                     <!--<li><a class="{{tags|get_item:item.stage}}" href="{% url 'data_loader:edit_item' item.id %}">{{item.name}} {{item.type}} {{item.subtype}} - {{item.track}} - {{item.stage}}</a></li>-->
                     {% endcomment %}
-                    <li><a href="{% url 'data_loader:edit_item' item.id %}">{{item.type}}</a></li>
+                    <li><a href="{% url 'data_loader:edit_item' item.id item.type %}">{{item.type}}</a></li>
                 {% endfor %}
                 </ul>
             </li>

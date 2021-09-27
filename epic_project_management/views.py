@@ -4,13 +4,13 @@ from data_loader.models import *
 from definitions.models import *
 
 def dependencies(root):
-    aux = {system: dependencies(system) for system in System.objects.filter(depends_on = root.id)}
+    aux = {system: dependencies(system) for system in System.objects.filter(parent = root.id)}
     return aux
 
 def home(request):
     projects = Project.objects.all()
 
-    root_projects = Project.objects.filter(depends_on = None)
+    root_projects = Project.objects.filter(parent = None)
     res = dict()
     #tags = dict()
     #stages = Stage.objects.all()
@@ -18,11 +18,11 @@ def home(request):
     #    tags[stage] = stage.tag
     
     for root_project in root_projects:
-        assigned_projects = Project.objects.filter(depends_on = root_project.id)
+        assigned_projects = Project.objects.filter(parent = root_project.id)
 
 
     for project in projects:
-        assigned_systems = System.objects.filter(project = project.id, depends_on = None)
+        assigned_systems = System.objects.filter(project = project.id, parent = None)
         aux = {root: dependencies(root) for root in assigned_systems}
         res[project] = aux
 
@@ -36,3 +36,34 @@ def home(request):
     }
 
     return render(request, 'homepage.html', context)
+
+
+
+
+def project_dependencies(root):
+    aux = {project: project_dependencies(project) for project in root.get_children()}
+    return aux
+
+def system_dependencies(root):
+    aux = {system: system_dependencies(system) for system in root.get_children()}
+    return aux
+
+def test_tree(request):
+    root_projects = Project.objects.filter(parent = None)
+    projects_tree = {project: project_dependencies(project) for project in root_projects}
+
+    systems_tree = dict()
+    for project in Project.objects.all():
+        assigned_systems = System.objects.filter(project = project.id, parent = None)
+        aux = {root: system_dependencies(root) for root in assigned_systems}
+        systems_tree[project] = aux
+
+    assigned_items = {system: Item.objects.filter(system=system.id) for system in System.objects.all()}
+
+    context = {
+        'projects_tree': projects_tree,
+        'systems_tree': systems_tree,
+        'assigned_items': assigned_items
+    }
+
+    return render(request, 'test_home.html', context)

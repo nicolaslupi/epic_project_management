@@ -1,0 +1,24 @@
+{% load app_filters %}
+{% if value|length %}
+
+<li><span class="caret">Systems</span>
+    <ul class="nested">
+        {% for key2, value2 in value.items %}
+            <li><a  href="{% url 'data_loader:edit_system' key2.id %}">{{key2.name}}</a></li>
+            {% include "recurse_systems.html" with value=value2 %}
+            
+            {% with items=assigned_items|get_item:key2 %}
+            {% if items|length %}
+            <li><span class="caret">Items</span>
+                <ul class="nested">
+                {% for item in items %}
+                    <li><a href="{% url 'data_loader:edit_item' item.id item.type %}">{{item.type}}</a></li>
+                {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+            {% endwith %}          
+        {% endfor %}
+    </ul>
+</li>
+{% endif %}

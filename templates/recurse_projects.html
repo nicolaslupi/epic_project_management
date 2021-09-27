@@ -1,0 +1,23 @@
+{% load app_filters %}
+{% if value|length %}
+
+<li><span class="caret">Projects</span>
+    <ul class="nested">
+        {% for key2, value2 in value.items %}
+            <li><a  href="{% url 'data_loader:edit_project' key2.id %}">{{key2.name}}</a></li>
+            {% include "recurse_projects.html" with value=value2 %}
+
+            {% with systems=systems_tree|get_item:key2 %}
+            
+            {% if systems|length %}
+            
+            {% include "recurse_systems.html" with value=systems %}
+
+            {% endif %}
+            {% endwith %}
+            
+                    
+        {% endfor %}
+    </ul>
+</li>
+{% endif %}

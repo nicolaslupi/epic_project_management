@@ -67,10 +67,10 @@ class System(MPTTModel):
     #    else:
     #        return self.name + ' - ' + self.project.name
 
-class ItemType(models.Model):
-    name = models.CharField(max_length=100)
-    def __str__(self):
-        return self.name
+#class ItemType(models.Model):
+#    name = models.CharField(max_length=100)
+#    def __str__(self):
+#        return self.name
 
 class Item(models.Model):
     #type = models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
@@ -102,9 +102,13 @@ class Atornillador(Item):
     RPM = models.IntegerField(blank=True, null=True)
     class Meta:
         verbose_name_plural = 'atornilladores'
+    def __str__(self):
+        return str(self.RPM)
 
 class Capacitor(Item):
     capacitancia = models.IntegerField(blank=True, null=True)
     voltaje = models.IntegerField(blank=True, null=True)
     class Meta:
         verbose_name_plural = 'capacitores'
+    def __str__(self):
+        return str(self.capacitancia) + ' - ' + str(self.voltaje)
