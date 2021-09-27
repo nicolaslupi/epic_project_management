@@ -3,21 +3,29 @@
 {% load app_filters %}
 <h1>Main Tree View</h1>
 
-<ul id="myUL">
-    <li><span class="caret">Projects</span>
-        <ul class="nested">
-            {% for key, value in projects_tree.items %}
-                <li><a href="{% url 'data_loader:edit_project' key.id %}">{{key.name}} </a></li>
-                {% include "recurse_projects.html" %}
-                
-                {% with systems=systems_tree|get_item:key %}            
-                    {% if systems|length %}
-                       {% include "recurse_systems.html" with value=systems %}
-                    {% endif %}
-                {% endwith %}
-    
-            {% endfor %}
-        </ul>
-    </li>
-  </ul>
+<div class="row">
+    <div class="col">
+      <div class="card card-body">
+        <ul id="myUL">
+            <li><span class="caret">Projects</span>
+                <ul class="nested">
+                    {% for key, value in projects_tree.items %}
+                        <li><a href="{% url 'data_loader:edit_project' key.id %}">{{key.name}} </a></li>
+                        {% include "recurse_projects.html" %}
+                        
+                        {% with systems=systems_tree|get_item:key %}            
+                            {% if systems|length %}
+                               {% include "recurse_systems.html" with value=systems %}
+                            {% endif %}
+                        {% endwith %}
+            
+                    {% endfor %}
+                </ul>
+            </li>
+          </ul>        
+      </div>
+    </div>
+  </div>
+
+
   {%endblock%}
