@@ -17,12 +17,14 @@ from django.core.paginator import Paginator
 
 items_dict = {
     'Atornillador':[forms.CreateAtornillador, Atornillador],
-    'Capacitor':[forms.CreateCapacitor, Capacitor]
+    'Capacitor':[forms.CreateCapacitor, Capacitor],
+    'Valvula':[forms.CreateValvula, Valvula],
     }
 
 def items(request):
     items_values = Item.objects.order_by('id')
     filtros = ItemFilter(request.GET, queryset=items_values)
+    #print('\n\n',filtros['type'])
     items_values = filtros.qs
     
     paginator = Paginator(items_values, 20)

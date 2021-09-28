@@ -5,12 +5,14 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 ITEM_TYPES = [
     ('Atornillador','Atornillador'),
-    ('Capacitor','Capacitor')
+    ('Capacitor','Capacitor'),
+    ('Valvula','Valvula')
 ]
 
 class Supplier(models.Model):
     name = models.CharField(max_length=100)
     web = models.CharField(max_length=100, blank=True, null=True)
+    address = models.CharField(max_length=100, blank=True, null=True)
     mail = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
 
@@ -79,6 +81,8 @@ class Item(models.Model):
     #type = models.ForeignKey(Atornillador, on_delete=models.SET_NULL, null=True)
 
     #subtype = models.CharField(max_length=100)
+    manufacturer_pn = models.CharField(max_length=200, null=True, blank=True)
+    unit_price = models.FloatField(null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     comments = models.CharField(max_length=200, null=True, blank=True)
     # track = models.ForeignKey(Track, on_delete=models.SET_NULL, null=True)
@@ -95,7 +99,8 @@ class Item(models.Model):
 
     
     def __str__(self):
-        title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
+        #title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
+        title = str(self.pk) + ' ' + self.type
         return title
 
 # Van a tener un campo llamado item_ptr
@@ -104,7 +109,7 @@ class Atornillador(Item):
     class Meta:
         verbose_name_plural = 'atornilladores'
     def __str__(self):
-        return 'Atornillador ' + str(self.RPM)
+        return str(str(self.item_ptr)) + ' ' +  str(self.RPM)
 
 class Capacitor(Item):
     capacitancia = models.IntegerField(blank=True, null=True)
@@ -112,4 +117,12 @@ class Capacitor(Item):
     class Meta:
         verbose_name_plural = 'capacitores'
     def __str__(self):
-        return 'Capacitor ' + str(self.capacitancia) + ' - ' + str(self.voltaje)
+        return str(str(self.item_ptr)) + ' ' +  str(self.capacitancia) + ' - ' + str(self.voltaje)
+
+class Valvula(Item):
+    material = models.CharField(max_length=200, blank=True, null=True)
+    pulgadas = models.CharField(max_length=200, blank=True, null=True)
+    class Meta:
+        verbose_name_plural = 'valvulas'
+    def __str__(self):
+        return str(str(self.item_ptr)) + ' ' + str(self.material) + ' - ' + str(self.pulgadas)

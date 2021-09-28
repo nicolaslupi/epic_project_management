@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Item, System, Project, Person, Supplier, Atornillador, Capacitor
+from .models import Item, System, Project, Person, Supplier, Atornillador, Capacitor, Valvula
 # Register your models here.
 
 admin.site.register(Item)
@@ -10,3 +10,4 @@ admin.site.register(Person)
 admin.site.register(Supplier)
 admin.site.register(Atornillador)
 admin.site.register(Capacitor)
+admin.site.register(Valvula)

@@ -89,6 +89,23 @@ class CreateCapacitor(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
 
+class CreateValvula(forms.ModelForm):
+    class Meta:
+        model = models.Valvula
+        fields = '__all__'
+        #exclude = ['type']
+
+        widgets = {
+            'load_date':DateInput(),
+            'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
+            'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
+            #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
+
 class CreateSystem(forms.ModelForm):
     class Meta:
         model = models.System

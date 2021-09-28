@@ -5,7 +5,8 @@ from definitions.models import *
 
 items_dict = {
     'Atornillador':Atornillador,
-    'Capacitor':Capacitor
+    'Capacitor':Capacitor,
+    'Valvula':Valvula
 }
 
 def dependencies(root):
