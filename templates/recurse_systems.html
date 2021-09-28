@@ -12,7 +12,7 @@
             <li><span class="caret">Items</span>
                 <ul class="nested">
                 {% for item in items %}
-                    <li><a href="{% url 'data_loader:edit_item' item.id item.type %}">{{item.type}}</a></li>
+                    <li><a href="{% url 'data_loader:edit_item' item.item_ptr.id item.type %}">{{item}}</a></li>
                 {% endfor %}
                 </ul>
             </li>

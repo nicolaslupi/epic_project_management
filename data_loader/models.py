@@ -93,6 +93,7 @@ class Item(models.Model):
     system = models.ForeignKey(System, on_delete=models.SET_NULL, null=True, blank=True)
     supplied_by = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
 
+    
     def __str__(self):
         title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
         return title
@@ -103,7 +104,7 @@ class Atornillador(Item):
     class Meta:
         verbose_name_plural = 'atornilladores'
     def __str__(self):
-        return str(self.RPM)
+        return 'Atornillador ' + str(self.RPM)
 
 class Capacitor(Item):
     capacitancia = models.IntegerField(blank=True, null=True)
@@ -111,4 +112,4 @@ class Capacitor(Item):
     class Meta:
         verbose_name_plural = 'capacitores'
     def __str__(self):
-        return str(self.capacitancia) + ' - ' + str(self.voltaje)
+        return 'Capacitor ' + str(self.capacitancia) + ' - ' + str(self.voltaje)

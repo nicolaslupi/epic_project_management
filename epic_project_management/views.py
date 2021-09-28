@@ -3,6 +3,11 @@ from django.shortcuts import render
 from data_loader.models import *
 from definitions.models import *
 
+items_dict = {
+    'Atornillador':Atornillador,
+    'Capacitor':Capacitor
+}
+
 def dependencies(root):
     aux = {system: dependencies(system) for system in System.objects.filter(parent = root.id)}
     return aux
@@ -58,7 +63,11 @@ def test_tree(request):
         aux = {root: system_dependencies(root) for root in assigned_systems}
         systems_tree[project] = aux
 
-    assigned_items = {system: Item.objects.filter(system=system.id) for system in System.objects.all()}
+    assigned_items = {
+            system: [items_dict[item.type].objects.get(item_ptr = item.pk) for item in Item.objects.filter(system=system.id)]
+             for system in System.objects.all()
+        }
+    #assigned_items = {system: Item.objects.filter(system=system.id) for system in System.objects.all()}
 
     context = {
         'projects_tree': projects_tree,

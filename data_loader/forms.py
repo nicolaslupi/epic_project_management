@@ -4,6 +4,7 @@ from django import forms
 from django.forms import ModelForm
 from . import models
 from .models import System, Project
+from mptt.forms import TreeNodeChoiceField
 
 AREAS = [
     ('propulsion','Propulsion'),
@@ -69,6 +70,7 @@ class CreateAtornillador(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
     
 class CreateCapacitor(forms.ModelForm):
     class Meta:
@@ -85,11 +87,13 @@ class CreateCapacitor(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
 
 class CreateSystem(forms.ModelForm):
     class Meta:
         model = models.System
         fields = '__all__'
+        
         # widgets = {
         #         'd_next':DateInput(),
         #         'd_done':DateInput(),
@@ -97,6 +101,7 @@ class CreateSystem(forms.ModelForm):
         #     }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
         self.fields['parent'].queryset = System.objects.none()
 
         if 'project' in self.data:
