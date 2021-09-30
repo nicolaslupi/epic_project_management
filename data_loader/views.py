@@ -81,8 +81,6 @@ def get_type(request):
         form = forms.GetItem()
     return render(request, 'data_loader/load_item.html', {'form':form})
 
-
-
 def load_item(request, type):
     if request.method == 'POST':
         form = items_dict[type][0](request.POST)
@@ -102,6 +100,12 @@ def load_item(request, type):
     return render(request, 'data_loader/load_item.html', {'form':form})
 
 
+def view_item(request, id, type):
+    item = items_dict[type][1].objects.get(item_ptr = id)
+    attrs = [(field.name.title(), getattr(item, field.name)) for field in item._meta.fields]
+    attrs.append( ('Person', ', '.join( [person.full_name for person in list(item.person.all())] )) )
+    return render(request, 'data_loader/view_item.html', {'attrs':attrs})
+    
 def systems(request):
     systems_values = System.objects.order_by('id')
     context = {'systems':systems_values}
