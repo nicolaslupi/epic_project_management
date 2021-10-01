@@ -90,8 +90,7 @@ def load_item(request, type):
             instance.pk = None
             if instance.load_date == None:
                 instance.load_date = datetime.now().date()
-            instance.prueba = type
-
+            
             instance.save()
             form.save_m2m()
             return redirect('data_loader:items')    
