@@ -106,7 +106,12 @@ class Item(models.Model):
     
     def __str__(self):
         #title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
-        title = str(self.pk) + ' ' + self.type.name
+        tags = ['Material', 'Pulgadas', 'RPM', 'Capacitancia', 'Voltaje']
+        values = [self.material, self.pulgadas, self.RPM, self.capacitancia, self.voltaje]
+
+        info = [tag + ': ' + str(value) for tag, value in zip(tags, values) if value != None ]
+        title = str(self.pk) + ' - ' + self.type.name + ' - ' + ' - '.join(info)
+        #title = str(self.pk) + ' ' + self.type.name
         return title
 
 # Van a tener un campo llamado item_ptr

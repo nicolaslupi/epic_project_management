@@ -21,6 +21,20 @@ from django.core.paginator import Paginator
 #     'Valvula':[forms.CreateValvula, Valvula],
 #     }
 
+def load_type(request):
+    if request.method == 'POST':
+        form = forms.CreateType(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.pk = None
+            
+            instance.save()
+            #return redirect('data_loader:items')    
+            return load_item(request)
+    else:
+        form = forms.CreateType()
+    return render(request, 'data_loader/load_type.html', {'form':form})
+
 def items(request):
     items_values = Item.objects.order_by('id')
     filtros = ItemFilter(request.GET, queryset=items_values)

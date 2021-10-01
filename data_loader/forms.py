@@ -27,6 +27,10 @@ class GetItem(forms.ModelForm):
         model = models.Item
         fields = ['type']
         
+class CreateType(forms.ModelForm):
+    class Meta:
+        model = models.ItemType
+        fields = '__all__'
 
 class CreateItem(forms.ModelForm):
     #repeat = forms.IntegerField(required=False)

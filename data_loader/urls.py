@@ -16,6 +16,7 @@ urlpatterns = [
     path('projects/', views.projects, name='projects'),
     path('persons/', views.persons, name='persons'),
     path('suppliers/', views.suppliers, name='suppliers'),
+    path('load_type/', views.load_type, name='load_type'),
     path('load_item/', views.load_item, name='load_item'),
     #path('load_item/', views.get_type, name='load_item'),
     path('load_system/', views.load_system, name='load_system'),

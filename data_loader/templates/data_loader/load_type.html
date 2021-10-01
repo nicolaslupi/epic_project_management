@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 {% block content %}
 
 <div class="container mt-4">
@@ -7,9 +7,9 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{% url 'data_loader:projects' %}">Projects</a>
+                        <a href="{% url 'data_loader:suppliers' %}">Types</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Load Project</li>
+                    <li class="breadcrumb-item active" aria-current="page">Load Type</li>
                 </ol>
             </nav>
         </div>
@@ -22,4 +22,5 @@
     <div class='col-md-2'><input type="submit" value="Submit"></div>
 </form>
 </div>
+
 {%endblock%}

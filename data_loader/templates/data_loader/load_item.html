@@ -15,6 +15,21 @@
         </div>
     </div>
 </div>
+
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav>
+                <ol>
+                    <a href="{%url 'data_loader:load_type'%}" class="btn btn-primary">Add New Type</a>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
 <div class="container">
     <form method="post" id="CreateItem" data-systems-url="{% url 'data_loader:ajax_load_systems' %}">
         {% csrf_token %}
