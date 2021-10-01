@@ -31,10 +31,12 @@
         
         <tbody>
             {% for name, value in attrs %}
+                {% if value != None %}
                 <tr>
                     <td>{{name}}</td>
                     <td>{{value}}</td>
                 </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>

@@ -69,14 +69,14 @@ class System(MPTTModel):
     #    else:
     #        return self.name + ' - ' + self.project.name
 
-#class ItemType(models.Model):
-#    name = models.CharField(max_length=100)
-#    def __str__(self):
-#        return self.name
+class ItemType(models.Model):
+   name = models.CharField(max_length=100)
+   def __str__(self):
+       return self.name
 
 class Item(models.Model):
-    #type = models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
-    type = models.CharField(max_length=100, choices=ITEM_TYPES, blank=True, null=True)
+    type = models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
+    #type = models.CharField(max_length=100, choices=ITEM_TYPES, blank=True, null=True)
 
     #type = models.ForeignKey(Atornillador, on_delete=models.SET_NULL, null=True)
 
@@ -97,32 +97,38 @@ class Item(models.Model):
     system = models.ForeignKey(System, on_delete=models.SET_NULL, null=True, blank=True)
     supplied_by = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
 
+    material = models.CharField(max_length=200, blank=True, null=True)
+    pulgadas = models.CharField(max_length=200, blank=True, null=True)
+    RPM = models.IntegerField(blank=True, null=True)
+    capacitancia = models.IntegerField(blank=True, null=True)
+    voltaje = models.IntegerField(blank=True, null=True)
+
     
     def __str__(self):
         #title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
-        title = str(self.pk) + ' ' + self.type
+        title = str(self.pk) + ' ' + self.type.name
         return title
 
 # Van a tener un campo llamado item_ptr
-class Atornillador(Item):
-    RPM = models.IntegerField(blank=True, null=True)
-    class Meta:
-        verbose_name_plural = 'atornilladores'
-    def __str__(self):
-        return str(str(self.item_ptr)) + ' ' +  str(self.RPM)
+# class Atornillador(Item):
+#     RPM = models.IntegerField(blank=True, null=True)
+#     class Meta:
+#         verbose_name_plural = 'atornilladores'
+#     def __str__(self):
+#         return str(str(self.item_ptr)) + ' ' +  str(self.RPM)
 
-class Capacitor(Item):
-    capacitancia = models.IntegerField(blank=True, null=True)
-    voltaje = models.IntegerField(blank=True, null=True)
-    class Meta:
-        verbose_name_plural = 'capacitores'
-    def __str__(self):
-        return str(str(self.item_ptr)) + ' ' +  str(self.capacitancia) + ' - ' + str(self.voltaje)
+# class Capacitor(Item):
+#     capacitancia = models.IntegerField(blank=True, null=True)
+#     voltaje = models.IntegerField(blank=True, null=True)
+#     class Meta:
+#         verbose_name_plural = 'capacitores'
+#     def __str__(self):
+#         return str(str(self.item_ptr)) + ' ' +  str(self.capacitancia) + ' - ' + str(self.voltaje)
 
-class Valvula(Item):
-    material = models.CharField(max_length=200, blank=True, null=True)
-    pulgadas = models.CharField(max_length=200, blank=True, null=True)
-    class Meta:
-        verbose_name_plural = 'valvulas'
-    def __str__(self):
-        return str(str(self.item_ptr)) + ' ' + str(self.material) + ' - ' + str(self.pulgadas)
+# class Valvula(Item):
+#     material = models.CharField(max_length=200, blank=True, null=True)
+#     pulgadas = models.CharField(max_length=200, blank=True, null=True)
+#     class Meta:
+#         verbose_name_plural = 'valvulas'
+#     def __str__(self):
+#         return str(str(self.item_ptr)) + ' ' + str(self.material) + ' - ' + str(self.pulgadas)

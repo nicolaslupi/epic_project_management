@@ -15,11 +15,11 @@ from datetime import datetime
 from .filters import ItemFilter
 from django.core.paginator import Paginator
 
-items_dict = {
-    'Atornillador':[forms.CreateAtornillador, Atornillador],
-    'Capacitor':[forms.CreateCapacitor, Capacitor],
-    'Valvula':[forms.CreateValvula, Valvula],
-    }
+# items_dict = {
+#     'Atornillador':[forms.CreateAtornillador, Atornillador],
+#     'Capacitor':[forms.CreateCapacitor, Capacitor],
+#     'Valvula':[forms.CreateValvula, Valvula],
+#     }
 
 def items(request):
     items_values = Item.objects.order_by('id')
@@ -38,11 +38,11 @@ def items(request):
         }
     return render(request, 'data_loader/items.html', context)
 
-def edit_item(request, id, type):
-    item = items_dict[type][1].objects.get(item_ptr = id)
-    form = items_dict[type][0](request.POST or None, instance = item)
-    #item = Item.objects.get(pk=id)
-    #form = forms.CreateItem(request.POST or None, instance=item)
+def edit_item(request, id):
+    #item = items_dict[type][1].objects.get(item_ptr = id)
+    #form = items_dict[type][0](request.POST or None, instance = item)
+    item = Item.objects.get(pk=id)
+    form = forms.CreateItem(request.POST or None, instance=item)
     if request.method == 'POST':
         form.save()
         return redirect('data_loader:items')
@@ -70,38 +70,39 @@ def edit_item(request, id, type):
 #         form = forms.CreateItem()
 #     return render(request, 'data_loader/load_item.html', {'form':form})
 
-def get_type(request):
-    if request.method == 'POST':
-        form = forms.GetItem(request.POST)
-        if form.is_valid():
-            type = request.POST['type']
-            #return load_item(request, ItemType.objects.get(pk=type).name)
-            return load_item(request, type)
-    else:
-        form = forms.GetItem()
-    return render(request, 'data_loader/load_item.html', {'form':form})
+# def get_type(request):
+#     if request.method == 'POST':
+#         form = forms.GetItem(request.POST)
+#         if form.is_valid():
+#             type = request.POST['type']
+#             #return load_item(request, ItemType.objects.get(pk=type).name)
+#             return load_item(request, type)
+#     else:
+#         form = forms.GetItem()
+#     return render(request, 'data_loader/load_item.html', {'form':form})
 
-def load_item(request, type):
+def load_item(request):
     if request.method == 'POST':
-        form = items_dict[type][0](request.POST)
+        form = forms.CreateItem(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.type = type
+            #instance.type = type
             instance.pk = None
             if instance.load_date == None:
                 instance.load_date = datetime.now().date()
-            instance.prueba = type
+            #instance.prueba = type
 
             instance.save()
             form.save_m2m()
             return redirect('data_loader:items')    
     else:
-        form = items_dict[type][0]()
+        form = forms.CreateItem()
     return render(request, 'data_loader/load_item.html', {'form':form})
 
 
-def view_item(request, id, type):
-    item = items_dict[type][1].objects.get(item_ptr = id)
+def view_item(request, id):
+    #item = items_dict[type][1].objects.get(item_ptr = id)
+    item = Item.objects.get(pk = id)
     attrs = [(field.name.title(), getattr(item, field.name)) for field in item._meta.fields]
     attrs.append( ('Person', ', '.join( [person.full_name for person in list(item.person.all())] )) )
     return render(request, 'data_loader/view_item.html', {'attrs':attrs})

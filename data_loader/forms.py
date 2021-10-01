@@ -29,7 +29,7 @@ class GetItem(forms.ModelForm):
         
 
 class CreateItem(forms.ModelForm):
-    repeat = forms.IntegerField(required=False)
+    #repeat = forms.IntegerField(required=False)
     
     class Meta:
         model = models.Item
@@ -55,56 +55,56 @@ class CreateItem(forms.ModelForm):
         elif self.instance.pk:
             self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
     
-class CreateAtornillador(forms.ModelForm):
-    class Meta:
-        model = models.Atornillador
-        fields = '__all__'
-        #exclude = ['type']
+# class CreateAtornillador(forms.ModelForm):
+#     class Meta:
+#         model = models.Atornillador
+#         fields = '__all__'
+#         #exclude = ['type']
         
-        widgets = {
-            'load_date':DateInput(),
-            'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
-        }
+#         widgets = {
+#             'load_date':DateInput(),
+#             'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
+#             'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
+#             #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
+#         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
     
-class CreateCapacitor(forms.ModelForm):
-    class Meta:
-        model = models.Capacitor
-        fields = '__all__'
-        #exclude = ['type']
+# class CreateCapacitor(forms.ModelForm):
+#     class Meta:
+#         model = models.Capacitor
+#         fields = '__all__'
+#         #exclude = ['type']
 
-        widgets = {
-            'load_date':DateInput(),
-            'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
-        }
+#         widgets = {
+#             'load_date':DateInput(),
+#             'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
+#             'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
+#             #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
+#         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
 
-class CreateValvula(forms.ModelForm):
-    class Meta:
-        model = models.Valvula
-        fields = '__all__'
-        #exclude = ['type']
+# class CreateValvula(forms.ModelForm):
+#     class Meta:
+#         model = models.Valvula
+#         fields = '__all__'
+#         #exclude = ['type']
 
-        widgets = {
-            'load_date':DateInput(),
-            'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
-        }
+#         widgets = {
+#             'load_date':DateInput(),
+#             'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
+#             'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
+#             #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
+#         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
 
 class CreateSystem(forms.ModelForm):
     class Meta:

@@ -12,7 +12,10 @@
             <li><span class="caret">Items</span>
                 <ul class="nested">
                 {% for item in items %}
+                    {%comment%}
                     <li><a href="{% url 'data_loader:edit_item' item.item_ptr.id item.type %}">{{item}}</a></li>
+                    {%endcomment%}
+                    <li><a href="{% url 'data_loader:edit_item' item.pk %}">{{item}}</a></li>
                 {% endfor %}
                 </ul>
             </li>
