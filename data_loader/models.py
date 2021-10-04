@@ -100,7 +100,7 @@ class Item(models.Model):
     
     def __str__(self):
         #title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
-        title = str(self.pk) + ' ' + self.type
+        title = str(self.pk) + ' - ' + self.type
         return title
 
 # Van a tener un campo llamado item_ptr
@@ -109,7 +109,7 @@ class Atornillador(Item):
     class Meta:
         verbose_name_plural = 'atornilladores'
     def __str__(self):
-        return str(str(self.item_ptr)) + ' ' +  str(self.RPM)
+        return str(str(self.item_ptr)) + ' - RPM: ' +  str(self.RPM)
 
 class Capacitor(Item):
     capacitancia = models.IntegerField(blank=True, null=True)
@@ -117,7 +117,7 @@ class Capacitor(Item):
     class Meta:
         verbose_name_plural = 'capacitores'
     def __str__(self):
-        return str(str(self.item_ptr)) + ' ' +  str(self.capacitancia) + ' - ' + str(self.voltaje)
+        return str(str(self.item_ptr)) + ' - Capacitancia: ' +  str(self.capacitancia) + ' - Voltaje: ' + str(self.voltaje)
 
 class Valvula(Item):
     material = models.CharField(max_length=200, blank=True, null=True)
@@ -125,4 +125,4 @@ class Valvula(Item):
     class Meta:
         verbose_name_plural = 'valvulas'
     def __str__(self):
-        return str(str(self.item_ptr)) + ' ' + str(self.material) + ' - ' + str(self.pulgadas)
+        return str(str(self.item_ptr)) + ' - Material: ' + str(self.material) + ' - Pulgadas: ' + str(self.pulgadas)
