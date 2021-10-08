@@ -1,9 +1,11 @@
 """ DATA LOADER FORMS """
 
 from django import forms
-from django.forms import ModelForm
+from django.db.models.base import Model
+#from django.forms import ModelForm
+from django.forms import modelformset_factory
 from . import models
-from .models import System, Project
+from .models import System, Project, Item
 from mptt.forms import TreeNodeChoiceField
 
 AREAS = [
@@ -44,23 +46,28 @@ class CreateCompra(forms.ModelForm):
             super().__init__(*args, **kwargs)
 
 
-class CreateItem(forms.ModelForm):
-    #repeat = forms.IntegerField(required=False)
-    
-    class Meta:
-        model = models.Item
-        fields = '__all__'
-        exclude = ['compra']
-        
-        widgets = {
-            'load_date':DateInput(),
-            'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
-            #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
-        }
+""" Model Forms - Varios Items con una sola carga """
+ItemFormSet = modelformset_factory(
+    Item, fields='__all__', exclude=['compra'], extra=1
+)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+# class CreateItem(forms.ModelForm):
+#     #repeat = forms.IntegerField(required=False)
+    
+#     class Meta:
+#         model = models.Item
+#         fields = '__all__'
+#         exclude = ['compra']
+        
+#         widgets = {
+#             #'load_date':DateInput(),
+#             'description':forms.Textarea(attrs={'rows':1, 'cols':15}),
+#             'comments':forms.Textarea(attrs={'rows':1, 'cols':15}),
+#             #'person':forms.Textarea(attrs={'rows':1, 'cols':15})
+#         }
+
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
         # self.fields['system'].queryset = System.objects.none()
         
         # if 'project' in self.data:

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'data_loader:items' %}">Items</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Load Item</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav>
+                <ol>
+                    <a href="{%url 'data_loader:load_type'%}" class="btn btn-primary">Add New Type</a>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <form id="form-container" method="POST">
+        {% csrf_token %}
+        {{formset.management_form}}
+        {% for form in formset %}
+        <div class="item-form">
+            <hr>
+            <h2>Item</h2>
+            {{form.as_p}}
+        </div>
+        {%endfor%}
+        <button id="add-form" type="button">Agregar Item</button>
+        <button type="submit">Cargar Items</button>
+    </form>
+    
+    
+    {%comment%}
+    <!--<form method="post" id="CreateItem" data-systems-url="{% url 'data_loader:ajax_load_systems' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class='col-md-2'><input type="submit" value="Submit"></div>
+    </form>-->
+    {%endcomment%}
+</div>
+
+<script>
+    let itemForm = document.querySelectorAll(".item-form")
+    let container = document.querySelector("#form-container")
+    let addButton= document.querySelector("#add-form")
+    let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+
+    let formNum = itemForm.length-1
+    addButton.addEventListener('click', addForm)
+
+    function addForm(e){
+        e.preventDefault()
+
+        let newForm = itemForm[0].cloneNode(true)
+        let formRegex = RegExp(`form-(\\d){1}-`,'g')
+
+        formNum++
+        console.log(formNum)
+        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+        container.insertBefore(newForm, addButton)
+
+        totalForms.setAttribute('value', `${formNum+1}`)
+    }
+
+</script>
+
+{% endblock %}

@@ -15,11 +15,6 @@ from datetime import datetime
 from .filters import ItemFilter
 from django.core.paginator import Paginator
 
-# items_dict = {
-#     'Atornillador':[forms.CreateAtornillador, Atornillador],
-#     'Capacitor':[forms.CreateCapacitor, Capacitor],
-#     'Valvula':[forms.CreateValvula, Valvula],
-#     }
 
 def load_type(request):
     if request.method == 'POST':
@@ -113,23 +108,41 @@ def edit_item(request, id):
 #     return render(request, 'data_loader/load_item.html', {'form':form})
 
 def load_item(request, compra):
-    print('\n\n',compra)
-    if request.method == 'POST':
-        form = forms.CreateItem(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            #instance.type = type
-            instance.compra = Compra.objects.get(pk = compra)
-            instance.pk = None
-            #if instance.load_date == None:
-            #    instance.load_date = datetime.now().date()
-            
-            instance.save()
-            form.save_m2m()
-            return redirect('data_loader:items')    
+    if request.method=='POST':
+        formset = forms.ItemFormSet(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                if form['type'].value():
+                #if form.is_valid():
+                    child = form.save(commit=False)
+                    child.compra = Compra.objects.get(pk = compra)
+                    child.pk = None
+                    child.save()
+                    form.save_m2m()
+            return redirect('data_loader:items')
     else:
-        form = forms.CreateItem()
-    return render(request, 'data_loader/load_item.html', {'form':form})
+        formset = forms.ItemFormSet(queryset=Item.objects.none())
+    return render(request, 'data_loader/load_item_formset.html', {'formset':formset})
+
+""" Load Item Viejo """
+# def load_item(request, compra):
+#     print('\n\n',compra)
+#     if request.method == 'POST':
+#         form = forms.CreateItem(request.POST)
+#         if form.is_valid():
+#             instance = form.save(commit=False)
+#             #instance.type = type
+#             instance.compra = Compra.objects.get(pk = compra)
+#             instance.pk = None
+#             #if instance.load_date == None:
+#             #    instance.load_date = datetime.now().date()
+            
+#             instance.save()
+#             form.save_m2m()
+#             return redirect('data_loader:items')    
+#     else:
+#         form = forms.CreateItem()
+#     return render(request, 'data_loader/load_item.html', {'form':form})
 
 
 def view_item(request, id):
