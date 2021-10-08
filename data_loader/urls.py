@@ -16,20 +16,17 @@ urlpatterns = [
     path('projects/', views.projects, name='projects'),
     path('persons/', views.persons, name='persons'),
     path('suppliers/', views.suppliers, name='suppliers'),
+    path('load_purchase/', views.load_purchase, name='load_purchase'),
     path('load_type/', views.load_type, name='load_type'),
-    path('load_item/', views.load_item, name='load_item'),
-    #path('load_item/', views.get_type, name='load_item'),
+    path('load_item/<int:compra>', views.load_item, name='load_item'),
     path('load_system/', views.load_system, name='load_system'),
     path('load_project/', views.load_project, name='load_project'),
     path('load_person/', views.load_person, name='load_person'),
     path('load_supplier/', views.load_supplier, name='load_supplier'),
-    #path('ajax/load-stages/', views.load_stages, name='ajax_load_stages'), # AJAX
     path('ajax/load-systems/', views.load_systems, name='ajax_load_systems'), # AJAX
-    #path("get_items/", views.get_items.as_view()),
     path("get_systems/", views.get_systems.as_view()),
     path("get_projects/", views.get_projects.as_view()),
     path("get_persons/", views.get_persons.as_view()),
-    #path('load_atornillador/', views.load_atornillador, name='load_atornillador')
     path('view_item/<int:id>', views.view_item, name='view_item'),
     path('view_project/<int:id>', views.view_project, name='view_project'),
     path('view_system/<int:id>', views.view_system, name='view_system'),

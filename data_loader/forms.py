@@ -32,12 +32,25 @@ class CreateType(forms.ModelForm):
         model = models.ItemType
         fields = '__all__'
 
+class CreateCompra(forms.ModelForm):
+    class Meta:
+        model = models.Compra
+        fields = '__all__'
+        widgets = {
+            'date':DateInput()
+        }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+
 class CreateItem(forms.ModelForm):
     #repeat = forms.IntegerField(required=False)
     
     class Meta:
         model = models.Item
         fields = '__all__'
+        exclude = ['compra']
         
         widgets = {
             'load_date':DateInput(),
@@ -48,16 +61,16 @@ class CreateItem(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['system'].queryset = System.objects.none()
+        # self.fields['system'].queryset = System.objects.none()
         
-        if 'project' in self.data:
-            try:
-                project_id = int(self.data.get('project'))
-                self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')
-            except (ValueError, TypeError):
-                pass
-        elif self.instance.pk:
-            self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
+        # if 'project' in self.data:
+        #     try:
+        #         project_id = int(self.data.get('project'))
+        #         self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')
+        #     except (ValueError, TypeError):
+        #         pass
+        # elif self.instance.pk:
+        #     self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
     
 # class CreateAtornillador(forms.ModelForm):
 #     class Meta:

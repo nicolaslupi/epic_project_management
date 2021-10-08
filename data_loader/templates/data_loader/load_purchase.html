@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-10">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'data_loader:suppliers' %}">Compras (corregir url)</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Load Compra</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container">
+<form class="site-form" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <div class='col-md-2'><input type="submit" value="Cargar Items"></div>
+</form>
+</div>
+
+{%endblock%}

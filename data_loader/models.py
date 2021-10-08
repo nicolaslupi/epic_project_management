@@ -2,6 +2,7 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 #from definitions.models import Track, Stage
+from definitions.models import ItemType, ItemSubType
 
 ITEM_TYPES = [
     ('Atornillador','Atornillador'),
@@ -10,6 +11,16 @@ ITEM_TYPES = [
 ]
 
 class Supplier(models.Model):
+    name = models.CharField(max_length=100)
+    web = models.CharField(max_length=100, blank=True, null=True)
+    address = models.CharField(max_length=100, blank=True, null=True)
+    mail = models.CharField(max_length=100, blank=True, null=True)
+    phone = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Manufacturer(models.Model):
     name = models.CharField(max_length=100)
     web = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
@@ -69,50 +80,70 @@ class System(MPTTModel):
     #    else:
     #        return self.name + ' - ' + self.project.name
 
-class ItemType(models.Model):
-   name = models.CharField(max_length=100)
-   def __str__(self):
-       return self.name
+# Llevo a definitions
+# class ItemType(models.Model):
+#    name = models.CharField(max_length=100)
+#    def __str__(self):
+#        return self.name
+
+class Compra(models.Model):
+    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
+    loaded_by = models.ManyToManyField(Person)
+    trello = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    gasto = models.FloatField(null=True, blank=True)
 
 class Item(models.Model):
+    compra = models.ForeignKey(Compra, on_delete=models.SET_NULL, null=True)
     type = models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
-    #type = models.CharField(max_length=100, choices=ITEM_TYPES, blank=True, null=True)
-
-    #type = models.ForeignKey(Atornillador, on_delete=models.SET_NULL, null=True)
-
-    #subtype = models.CharField(max_length=100)
-    manufacturer_pn = models.CharField(max_length=200, null=True, blank=True)
-    unit_price = models.FloatField(null=True, blank=True)
+    subtype = models.ForeignKey(ItemSubType, on_delete=models.SET_NULL, null=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     comments = models.CharField(max_length=200, null=True, blank=True)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL, null=True, blank=True)
+    manufacturer_pn = models.CharField(max_length=200, null=True, blank=True)
+    link_compra = models.CharField(max_length=200, null=True, blank=True)
+    link_datasheet = models.CharField(max_length=200, null=True, blank=True)
+    unit_price = models.FloatField(null=True, blank=True)
+    total_units = models.IntegerField()
+    in_stock = models.IntegerField()
+    taken = models.IntegerField()
+
+    #type = models.CharField(max_length=100, choices=ITEM_TYPES, blank=True, null=True)
+    #type = models.ForeignKey(Atornillador, on_delete=models.SET_NULL, null=True)
+    #subtype = models.CharField(max_length=100)
+    
+    def __str__(self):
+        #title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
+        #tags = ['Material', 'Pulgadas', 'RPM', 'Capacitancia', 'Voltaje']
+        #values = [self.material, self.pulgadas, self.RPM, self.capacitancia, self.voltaje]
+
+        #info = [tag + ': ' + str(value) for tag, value in zip(tags, values) if value != None ]
+        #title = str(self.pk) + ' - ' + self.type.name + ' - ' + ' - '.join(info)
+        title = str(self.pk) + ' ' + self.type.name + ' ' + self.subtype.name
+        return title
+    
+    
     # track = models.ForeignKey(Track, on_delete=models.SET_NULL, null=True)
     # stage = models.ForeignKey(Stage, on_delete=models.SET_NULL, null=True)
     # d_next = models.DateField(null=True)
     # d_done = models.DateField(null=True)
     # action = models.CharField(max_length=100, blank=True)
     # action_date = models.DateField(null=True, blank=True)
-    load_date = models.DateField(null=True, blank=True)
-    person = models.ManyToManyField(Person)
-    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
-    system = models.ForeignKey(System, on_delete=models.SET_NULL, null=True, blank=True)
-    supplied_by = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
+    #load_date = models.DateField(null=True, blank=True)
+    #person = models.ManyToManyField(Person)
+    #project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
+    #system = models.ForeignKey(System, on_delete=models.SET_NULL, null=True, blank=True)
+    #supplied_by = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
 
-    material = models.CharField(max_length=200, blank=True, null=True)
-    pulgadas = models.CharField(max_length=200, blank=True, null=True)
-    RPM = models.IntegerField(blank=True, null=True)
-    capacitancia = models.IntegerField(blank=True, null=True)
-    voltaje = models.IntegerField(blank=True, null=True)
+    # material = models.CharField(max_length=200, blank=True, null=True)
+    # pulgadas = models.CharField(max_length=200, blank=True, null=True)
+    # RPM = models.IntegerField(blank=True, null=True)
+    # capacitancia = models.IntegerField(blank=True, null=True)
+    # voltaje = models.IntegerField(blank=True, null=True)
 
     
-    def __str__(self):
-        #title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
-        tags = ['Material', 'Pulgadas', 'RPM', 'Capacitancia', 'Voltaje']
-        values = [self.material, self.pulgadas, self.RPM, self.capacitancia, self.voltaje]
-
-        info = [tag + ': ' + str(value) for tag, value in zip(tags, values) if value != None ]
-        title = str(self.pk) + ' - ' + self.type.name + ' - ' + ' - '.join(info)
-        #title = str(self.pk) + ' ' + self.type.name
-        return title
+    
 
 # Van a tener un campo llamado item_ptr
 # class Atornillador(Item):

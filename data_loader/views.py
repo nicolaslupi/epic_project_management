@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
 from django.shortcuts import render, redirect
 from . import forms
-from definitions.models import Stage
+#from definitions.models import Stage
 from .models import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -34,6 +34,23 @@ def load_type(request):
     else:
         form = forms.CreateType()
     return render(request, 'data_loader/load_type.html', {'form':form})
+
+def load_purchase(request):
+    if request.method == 'POST':
+        form = forms.CreateCompra(request.POST)
+        
+        # Guardar compra y cargar Items, por ahora uno solo
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.pk = None
+
+            instance.save()
+            request.method = 'GET'
+            return redirect('data_loader:load_item', compra=instance.pk)
+            #return redirect('data_loader:items')
+    else:
+        form = forms.CreateCompra()
+    return render(request, 'data_loader/load_purchase.html', {'form':form})
 
 def items(request):
     items_values = Item.objects.order_by('id')
@@ -95,17 +112,18 @@ def edit_item(request, id):
 #         form = forms.GetItem()
 #     return render(request, 'data_loader/load_item.html', {'form':form})
 
-def load_item(request):
+def load_item(request, compra):
+    print('\n\n',compra)
     if request.method == 'POST':
         form = forms.CreateItem(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             #instance.type = type
+            instance.compra = Compra.objects.get(pk = compra)
             instance.pk = None
-            if instance.load_date == None:
-                instance.load_date = datetime.now().date()
-            #instance.prueba = type
-
+            #if instance.load_date == None:
+            #    instance.load_date = datetime.now().date()
+            
             instance.save()
             form.save_m2m()
             return redirect('data_loader:items')    
