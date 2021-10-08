@@ -74,6 +74,7 @@ class System(MPTTModel):
 #    def __str__(self):
 #        return self.name
 
+
 class Item(models.Model):
     #type = models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
     type = models.CharField(max_length=100, choices=ITEM_TYPES, blank=True, null=True)
