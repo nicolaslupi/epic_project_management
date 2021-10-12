@@ -47,6 +47,22 @@ def load_purchase(request):
         form = forms.CreateCompra()
     return render(request, 'data_loader/load_purchase.html', {'form':form})
 
+def compras(request):
+    compras_values = Compra.objects.order_by('id')
+    #filtros = RetiroFilter(request.GET, queryset=retiros_values)
+    #retiros_values = filtros.qs
+    
+    paginator = Paginator(compras_values, 20)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    
+    context = {
+        'compras':compras_values,
+        'page_obj':page_obj,
+        #'filtros':filtros
+        }
+    return render(request, 'data_loader/compras.html', context)
+
 def items(request):
     items_values = Item.objects.order_by('id')
     filtros = ItemFilter(request.GET, queryset=items_values)
@@ -126,11 +142,13 @@ def load_item(request, compra):
     return render(request, 'data_loader/load_item_formset.html', {'formset':formset})
 
 def retirar_item(request, item):
+    item = Item.objects.get(pk = item)
+    in_stock = item.in_stock
     if request.method == 'POST':
-        form = forms.RetirarItem(request.POST)
+        form = forms.RetirarItem(in_stock, request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
-            item = Item.objects.get(pk = item)
+            
             instance.item = item
             unidades = instance.unidades
             item.in_stock -= unidades
@@ -140,7 +158,7 @@ def retirar_item(request, item):
             instance.save()
             return redirect('data_loader:items')
     else:
-        form = forms.RetirarItem()
+        form = forms.RetirarItem(in_stock)
     return render(request, 'data_loader/retirar_item.html', {'form':form})
         
 def retiros(request):

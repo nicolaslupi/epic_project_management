@@ -7,6 +7,7 @@ from django.forms import modelformset_factory
 from . import models
 from .models import System, Project, Item
 from mptt.forms import TreeNodeChoiceField
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 AREAS = [
     ('propulsion','Propulsion'),
@@ -79,8 +80,10 @@ class RetirarItem(forms.ModelForm):
             'date':DateInput()
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, in_stock, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        #print('\n\n',max_unidades)
+        self.fields['unidades'] = forms.IntegerField(validators=[MaxValueValidator(in_stock)])
 
 # class CreateItem(forms.ModelForm):
 #     #repeat = forms.IntegerField(required=False)
