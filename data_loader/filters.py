@@ -14,11 +14,11 @@ class ItemFilter(django_filters.FilterSet):
     manufacturer_pn = CharFilter(field_name='manufacturer_pn', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
     unit_price = NumberFilter(field_name='unit_price', widget=NumberInput(attrs={'size':'10'}))
     description = CharFilter(field_name='description', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
-    material = CharFilter(field_name='material', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
-    pulgadas = CharFilter(field_name='pulgadas', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
-    RPM = NumberFilter(field_name='RPM', widget=NumberInput(attrs={'size':'10'}))
-    capacitancia = NumberFilter(field_name='capacitancia', widget=NumberInput(attrs={'size':'10'}))
-    voltaje = NumberFilter(field_name='voltaje', widget=NumberInput(attrs={'size':'10'}))
+    # material = CharFilter(field_name='material', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
+    # pulgadas = CharFilter(field_name='pulgadas', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
+    # RPM = NumberFilter(field_name='RPM', widget=NumberInput(attrs={'size':'10'}))
+    # capacitancia = NumberFilter(field_name='capacitancia', widget=NumberInput(attrs={'size':'10'}))
+    # voltaje = NumberFilter(field_name='voltaje', widget=NumberInput(attrs={'size':'10'}))
 
 
     class Meta:

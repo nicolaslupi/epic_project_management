@@ -47,9 +47,40 @@ class CreateCompra(forms.ModelForm):
 
 
 """ Model Forms - Varios Items con una sola carga """
+# Lo comentado es por si en la carga del item se lo quiere asignar ya a un proyecto
+# De lo contrario hay que cargarlo inicialmente a stock y luego llevarlo a un proyecto
+class CreateItem(forms.ModelForm):
+    #project = forms.CharField(max_length=200, required=False, label='project', widget=forms.Select())
+    
+    class Meta:
+        model = Item
+        fields = '__all__'
+        exclude = ['compra', 'total_units', 'taken']
+    
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
+    #     self.fields['project'].required = False
+
+#ItemFormSet = modelformset_factory(
+#    Item, fields='__all__', exclude=['compra'], extra=1
+#)
+
 ItemFormSet = modelformset_factory(
-    Item, fields='__all__', exclude=['compra'], extra=1
+    Item, form = CreateItem, extra=1
 )
+
+class RetirarItem(forms.ModelForm):
+    class Meta:
+        model = models.Retiro
+        fields = '__all__'
+        exclude = ['item']
+        widgets = {
+            'date':DateInput()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 # class CreateItem(forms.ModelForm):
 #     #repeat = forms.IntegerField(required=False)

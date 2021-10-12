@@ -105,9 +105,9 @@ class Item(models.Model):
     link_compra = models.CharField(max_length=200, null=True, blank=True)
     link_datasheet = models.CharField(max_length=200, null=True, blank=True)
     unit_price = models.FloatField(null=True, blank=True)
-    total_units = models.IntegerField()
-    in_stock = models.IntegerField()
-    taken = models.IntegerField()
+    total_units = models.PositiveIntegerField(blank=True, null=True)
+    in_stock = models.PositiveIntegerField(blank=True, null=True)
+    taken = models.PositiveIntegerField(default=0, blank=True, null=True)
 
     #type = models.CharField(max_length=100, choices=ITEM_TYPES, blank=True, null=True)
     #type = models.ForeignKey(Atornillador, on_delete=models.SET_NULL, null=True)
@@ -142,8 +142,17 @@ class Item(models.Model):
     # capacitancia = models.IntegerField(blank=True, null=True)
     # voltaje = models.IntegerField(blank=True, null=True)
 
-    
-    
+class Retiro(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.SET_NULL, null=True)
+    retirado_por = models.ManyToManyField(Person)
+    date = models.DateField(null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
+    system = models.ForeignKey(System, on_delete=models.SET_NULL, null=True, blank=True)
+    comentarios = models.CharField(max_length=200, null=True, blank=True)
+    unidades = models.IntegerField()
+
+    def __str__(self):
+        return self.item.type.name
 
 # Van a tener un campo llamado item_ptr
 # class Atornillador(Item):

@@ -8,9 +8,9 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="">Items</a>
+                        <a href="">Retiros</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Item List</li>
+                    <li class="breadcrumb-item active" aria-current="page">Lista de Retiros</li>
                 </ol>
             </nav>
         </div>
@@ -22,6 +22,7 @@
         </div> 
     </div>
 
+    {% comment %}
     <div class='row'>
         <div class='col'>
             <div class='card card-body'>
@@ -33,10 +34,11 @@
 
         </div>
     </div>
+    {% endcomment %}
 
 
     <div class="container">
-        {% if items.count %}
+        {% if retiros.count %}
         
         <table id="myTable" class="table table-stripped table-hover">
             <thead>
@@ -52,19 +54,20 @@
             </thead>
 
             <tbody>
-                {% for item in page_obj %}
+                {% for retiro in page_obj %}
                 <tr>
-                    <td>{{item.id}}</td>
-                    <td>{{item.type}}</td>
-                    <td>{{item.subtype}}</td>
-                    <td>{{item.manufacturer}}</td>
-                    <td>{{item.manufacturer_pn}}</td>
-                    <td>{{item.in_stock}}</td>
+                    <td>{{retiro.id}}</td>
+                    <td>{{retiro.type}}</td>
+                    <td>{{retiro.subtype}}</td>
+                    <td>{{retiro.manufacturer}}</td>
+                    <td>{{retiro.manufacturer_pn}}</td>
+                    <td>{{retiro.in_stock}}</td>
+                    {% comment %}
                     <td>
                         <a href="{% url 'data_loader:view_item' item.id%}" class="btn btn-primary btn-sm">View</a>
                         <a href="{% url 'data_loader:edit_item' item.id%}" class="btn btn-secondary btn-sm">Edit</a>
-                        <a href="{% url 'data_loader:retirar_item' item.id%}" class="btn btn-secondary btn-sm">Retirar</a>
                     </td>
+                    {% endcomment %}
                 </tr>
                 {% endfor %}
             </tbody>
@@ -95,8 +98,6 @@
         </li>
         {% endif %}
     </ul>
-
-
 
 </div>
 

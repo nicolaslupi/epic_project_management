@@ -50,7 +50,6 @@ def load_purchase(request):
 def items(request):
     items_values = Item.objects.order_by('id')
     filtros = ItemFilter(request.GET, queryset=items_values)
-    #print('\n\n',filtros['type'])
     items_values = filtros.qs
     
     paginator = Paginator(items_values, 20)
@@ -113,9 +112,11 @@ def load_item(request, compra):
         if formset.is_valid():
             for form in formset:
                 if form['type'].value():
-                #if form.is_valid():
                     child = form.save(commit=False)
                     child.compra = Compra.objects.get(pk = compra)
+                    print('\n\n',form.cleaned_data.get('project'))
+                    child.taken = child.in_stock
+                    child.total_units = child.in_stock
                     child.pk = None
                     child.save()
                     form.save_m2m()
@@ -123,6 +124,40 @@ def load_item(request, compra):
     else:
         formset = forms.ItemFormSet(queryset=Item.objects.none())
     return render(request, 'data_loader/load_item_formset.html', {'formset':formset})
+
+def retirar_item(request, item):
+    if request.method == 'POST':
+        form = forms.RetirarItem(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            item = Item.objects.get(pk = item)
+            instance.item = item
+            unidades = instance.unidades
+            item.in_stock -= unidades
+            item.taken += unidades
+            item.save()
+            instance.pk = None
+            instance.save()
+            return redirect('data_loader:items')
+    else:
+        form = forms.RetirarItem()
+    return render(request, 'data_loader/retirar_item.html', {'form':form})
+        
+def retiros(request):
+    retiros_values = Retiro.objects.order_by('id')
+    #filtros = RetiroFilter(request.GET, queryset=retiros_values)
+    #retiros_values = filtros.qs
+    
+    paginator = Paginator(retiros_values, 20)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    
+    context = {
+        'retiros':retiros_values,
+        'page_obj':page_obj,
+        #'filtros':filtros
+        }
+    return render(request, 'data_loader/retiros.html', context)
 
 """ Load Item Viejo """
 # def load_item(request, compra):
