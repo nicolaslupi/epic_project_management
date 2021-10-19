@@ -1,0 +1,4 @@
+<option value="">---------</option>
+{% for subtype in subtypes %}
+<option value="{{ subtype.pk }}">{{ subtype.name }}</option>
+{% endfor %}

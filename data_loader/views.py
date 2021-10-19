@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
 from django.shortcuts import render, redirect
 from . import forms
-#from definitions.models import Stage
+from definitions.models import ItemSubType
 from .models import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -164,26 +164,68 @@ def edit_item(request, id):
 #         form = forms.GetItem()
 #     return render(request, 'data_loader/load_item.html', {'form':form})
 
+
+# def load_item(request, compra):
+#     print('\n\n',compra)
+#     if request.method == 'POST':
+#         form = forms.CreateItem(request.POST)
+#         if form.is_valid():
+#             instance = form.save(commit=False)
+#             #instance.type = type
+#             instance.compra = Compra.objects.get(pk = compra)
+#             instance.pk = None
+#             #if instance.load_date == None:
+#             #    instance.load_date = datetime.now().date()
+            
+#             instance.save()
+#             form.save_m2m()
+#             return redirect('data_loader:items')    
+#     else:
+#         form = forms.CreateItem()
+#     return render(request, 'data_loader/load_item.html', {'form':form})
+
 def load_item(request, compra):
     if request.method=='POST':
-        formset = forms.ItemFormSet(request.POST)
-        if formset.is_valid():
-            for form in formset:
-                if form['type'].value():
-                    child = form.save(commit=False)
-                    child.compra = Compra.objects.get(pk = compra)
-                    child.taken = 0
-                    child.total_units = child.in_stock
-                    
-                    repeat = form.cleaned_data.get('repeat')
-                    if repeat == '':
-                        repeat = 1
-                    else:
-                        repeat = int(repeat)
+        form = forms.CreateItem(request.POST)
+        #formset = forms.ItemFormSet(request.POST)
+        #if formset.is_valid():
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.compra = Compra.objects.get(pk = compra)
+            instance.taken = 0
+            instance.total_units = instance.in_stock
 
-                    for _ in range(repeat):
-                        child.pk = None
-                        child.save()
+            repeat = form.cleaned_data.get('repeat')
+            print('\n\n', repeat)
+            if repeat == None:
+                repeat = 1
+            else:
+                repeat = int(repeat)
+
+            for _ in range(repeat):
+                instance.pk = None
+                instance.save()
+            
+            if 'continue' in request.POST:
+                request.method = 'GET'
+                form = forms.CreateItem()
+            elif 'stop' in request.POST:
+                return redirect('data_loader:items')
+    else:
+        form = forms.CreateItem()
+    return render(request, 'data_loader/load_item.html', {'form':form})
+
+
+            # for form in formset:
+            #     if form['type'].value():
+            #         child = form.save(commit=False)
+            #         child.compra = Compra.objects.get(pk = compra)
+            #         child.taken = 0
+            #         child.total_units = child.in_stock
+                    
+            #         for _ in range(repeat):
+            #             child.pk = None
+            #             child.save()
 
                     
                     #form.save_m2m()
@@ -197,10 +239,10 @@ def load_item(request, compra):
                         
                         #retiro.retirado_por
 
-            return redirect('data_loader:items')
-    else:
-        formset = forms.ItemFormSet(queryset=Item.objects.none())
-    return render(request, 'data_loader/load_item_formset.html', {'formset':formset})
+    #         return redirect('data_loader:items')
+    # else:
+    #     formset = forms.ItemFormSet(queryset=Item.objects.none())
+    # return render(request, 'data_loader/load_item_formset.html', {'formset':formset})
 
 def retirar_item(request, item):
     item = Item.objects.get(pk = item)
@@ -209,7 +251,7 @@ def retirar_item(request, item):
         form = forms.RetirarItem(in_stock, request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
-            
+            print('\n\n', request.POST)
             instance.item = item
             unidades = instance.unidades
             item.in_stock -= unidades
@@ -459,6 +501,11 @@ def load_systems(request):
     project_id = request.GET.get('project')
     systems = System.objects.filter(project = project_id).all()
     return render(request, 'data_loader/system_dropdown.html', {'systems': systems})
+
+def load_subtypes(request):
+    type_id = request.GET.get('type')
+    subtypes = ItemSubType.objects.filter(item_type = type_id).all()
+    return render(request, 'data_loader/subtype_dropdown.html', {'subtypes': subtypes})
 
 # def load_stages(request):
 #     track_id = request.GET.get('track_id')

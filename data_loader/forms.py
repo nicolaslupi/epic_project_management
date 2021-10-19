@@ -3,9 +3,10 @@
 from django import forms
 from django.db.models.base import Model
 #from django.forms import ModelForm
-from django.forms import modelformset_factory
+#from django.forms import modelformset_factory
 from . import models
-from .models import System, Project, Item
+from .models import System, Project
+from definitions.models import ItemSubType
 from mptt.forms import TreeNodeChoiceField
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -63,15 +64,26 @@ class CreateItem(forms.ModelForm):
     #system = forms.CharField(max_length=200, required=False, label='system', widget=forms.Select())
     
     class Meta:
-        model = Item
+        model = models.Item
         fields = '__all__'
         exclude = ['compra', 'total_units', 'taken']
         help_texts = {
             'in_stock': 'Unidades asignadas a cada entrada (n por código)'
         }
     
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['subtype'].queryset = ItemSubType.objects.none()
+
+        if 'type' in self.data:
+            try:
+                type_id = int(self.data.get('type'))
+                self.fields['subtype'].queryset = ItemSubType.objects.filter(item_type = type_id).order_by('name')
+            except:
+                pass
+        elif self.instance.pk:
+            self.fields['subtype'].queryset = self.instance.type.subtype_set.order_by('name')
+
     #     self.fields['system'].queryset = System.objects.none()
     #     self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
     #     self.fields['project'].required = False
@@ -86,10 +98,9 @@ class CreateItem(forms.ModelForm):
     #     elif self.instance.pk:
     #         self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
 
-
-ItemFormSet = modelformset_factory(
-    Item, form = CreateItem, extra=1
-)
+# ItemFormSet = modelformset_factory(
+#     Item, form = CreateItem, extra=1
+# )
 
 class RetirarItem(forms.ModelForm):
     class Meta:
