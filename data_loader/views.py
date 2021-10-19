@@ -30,6 +30,7 @@ def load_type(request):
         form = forms.CreateType()
     return render(request, 'data_loader/load_type.html', {'form':form})
 
+
 def load_purchase(request):
     if request.method == 'POST':
         form = forms.CreateCompra(request.POST)
@@ -40,9 +41,14 @@ def load_purchase(request):
             instance.pk = None
 
             instance.save()
-            request.method = 'GET'
-            return redirect('data_loader:load_item', compra=instance.pk)
-            #return redirect('data_loader:items')
+            form.save_m2m()
+            agregar = form.cleaned_data.get('agregar_items')
+            
+            if agregar:
+                request.method = 'GET'
+                return redirect('data_loader:load_item', compra=instance.pk)
+            else:
+                return redirect('data_loader:compras')
     else:
         form = forms.CreateCompra()
     return render(request, 'data_loader/load_purchase.html', {'form':form})
@@ -62,6 +68,42 @@ def compras(request):
         #'filtros':filtros
         }
     return render(request, 'data_loader/compras.html', context)
+
+def edit_compra(request, id):
+    compra = Compra.objects.get(pk=id)
+    form = forms.CreateCompra(request.POST or None, instance=compra)
+    if request.method == 'POST':
+        instance = form.save(commit=False)
+        instance.save()
+
+        agregar = form.cleaned_data.get('agregar_items')
+            
+        if agregar:
+            request.method = 'GET'
+            return redirect('data_loader:load_item', compra=instance.pk)
+        else:
+            return redirect('data_loader:compras')
+
+    else:
+        return render(request, 'data_loader/edit_compra.html', {'form':form})
+
+def view_compra(request, id):
+    selected_compra = Compra.objects.get(pk=id)
+    items_values = Item.objects.filter(compra = selected_compra).order_by('id')
+
+    filtros = ItemFilter(request.GET, queryset=items_values)
+    items_values = filtros.qs
+    
+    paginator = Paginator(items_values, 20)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    
+    context = {
+        'items':items_values,
+        'page_obj':page_obj,
+        'filtros':filtros
+        }
+    return render(request, 'data_loader/items.html', context)
 
 def items(request):
     items_values = Item.objects.order_by('id')
@@ -130,12 +172,31 @@ def load_item(request, compra):
                 if form['type'].value():
                     child = form.save(commit=False)
                     child.compra = Compra.objects.get(pk = compra)
-                    print('\n\n',form.cleaned_data.get('project'))
-                    child.taken = child.in_stock
+                    child.taken = 0
                     child.total_units = child.in_stock
-                    child.pk = None
-                    child.save()
-                    form.save_m2m()
+                    
+                    repeat = form.cleaned_data.get('repeat')
+                    if repeat == '':
+                        repeat = 1
+                    else:
+                        repeat = int(repeat)
+
+                    for _ in range(repeat):
+                        child.pk = None
+                        child.save()
+
+                    
+                    #form.save_m2m()
+                    #print(Compra.objects.get(pk=compra).loaded_by.all())
+                    # if form.cleaned_data.get('asignar') == 'proyecto':
+                    #     retiro = Retiro()
+                    #     retiro.item = child
+                    #     retiro.save()
+                    #     for person in child.compra.loaded_by.all():
+                    #         retiro.retirado_por.add(person.pk)
+                        
+                        #retiro.retirado_por
+
             return redirect('data_loader:items')
     else:
         formset = forms.ItemFormSet(queryset=Item.objects.none())
@@ -202,8 +263,21 @@ def view_item(request, id):
     #item = items_dict[type][1].objects.get(item_ptr = id)
     item = Item.objects.get(pk = id)
     attrs = [(field.name.title(), getattr(item, field.name)) for field in item._meta.fields]
-    attrs.append( ('Person', ', '.join( [person.full_name for person in list(item.person.all())] )) )
-    return render(request, 'data_loader/view_item.html', {'attrs':attrs})
+    #attrs.append( ('Person', ', '.join( [person.full_name for person in list(item.person.all())] )) )
+
+    retiros = Retiro.objects.filter(item = id).order_by('id')
+
+    paginator = Paginator(retiros, 20)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+
+    context = {
+        'attrs':attrs,
+        'retiros':retiros,
+        'page_obj':page_obj
+        }
+
+    return render(request, 'data_loader/view_item.html', context)
     
 def systems(request):
     systems_values = System.objects.order_by('id')

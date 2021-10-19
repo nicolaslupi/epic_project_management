@@ -26,7 +26,7 @@
         <div class='col'>
             <div class='card card-body'>
                 <form method='get'>
-                    {{filtros.form}}
+                    {{filtros.form.as_table}}
                 <button class='btn btn-primary' type='submit'> Search </button>
                 </form>
             </div>
@@ -44,8 +44,10 @@
                     <th>ID</th>
                     <th>Type</th>
                     <th>SubType</th>
+                    <th>Description</th>
                     <th>Manufacturer</th>
                     <th>Manufacturer PN</th>
+                    <th>Unidades</th>
                     <th>En Stock</th>
                     <th></th>
                 </tr>
@@ -57,8 +59,10 @@
                     <td>{{item.id}}</td>
                     <td>{{item.type}}</td>
                     <td>{{item.subtype}}</td>
+                    <td>{{item.description}}</td>
                     <td>{{item.manufacturer}}</td>
                     <td>{{item.manufacturer_pn}}</td>
+                    <td>{{item.total_units}}</td>
                     <td>{{item.in_stock}}</td>
                     <td>
                         <a href="{% url 'data_loader:view_item' item.id%}" class="btn btn-primary btn-sm">View</a>

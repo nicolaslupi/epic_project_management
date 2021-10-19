@@ -53,17 +53,15 @@
             <tbody>
                 {% for compra in page_obj %}
                 <tr>
-                    <td>{{retiro.id}}</td>
-                    <td>{{retiro.supplier}}</td>
-                    <td>{{retiro.trello}}</td>
-                    <td>{{retiro.description}}</td>
-                    
-                    {% comment %}
+                    <td>{{compra.id}}</td>
+                    <td>{{compra.supplier}}</td>
+                    <td>{{compra.trello}}</td>
+                    <td>{{compra.description}}</td>
                     <td>
-                        <a href="{% url 'data_loader:view_item' item.id%}" class="btn btn-primary btn-sm">View</a>
-                        <a href="{% url 'data_loader:edit_item' item.id%}" class="btn btn-secondary btn-sm">Edit</a>
+                        <a href="{% url 'data_loader:view_compra' compra.id%}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'data_loader:edit_compra' compra.id%}" class="btn btn-secondary btn-sm">Edit</a>
                     </td>
-                    {% endcomment %}
+                    
                 </tr>
                 {% endfor %}
             </tbody>

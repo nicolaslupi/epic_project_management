@@ -20,15 +20,15 @@ class Supplier(models.Model):
     def __str__(self):
         return self.name
 
-class Manufacturer(models.Model):
-    name = models.CharField(max_length=100)
-    web = models.CharField(max_length=100, blank=True, null=True)
-    address = models.CharField(max_length=100, blank=True, null=True)
-    mail = models.CharField(max_length=100, blank=True, null=True)
-    phone = models.CharField(max_length=100, blank=True, null=True)
+# class Manufacturer(models.Model):
+#     name = models.CharField(max_length=100)
+#     web = models.CharField(max_length=100, blank=True, null=True)
+#     address = models.CharField(max_length=100, blank=True, null=True)
+#     mail = models.CharField(max_length=100, blank=True, null=True)
+#     phone = models.CharField(max_length=100, blank=True, null=True)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 class Person(models.Model):
     full_name = models.CharField(max_length=100)
@@ -100,13 +100,13 @@ class Item(models.Model):
     subtype = models.ForeignKey(ItemSubType, on_delete=models.SET_NULL, null=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     comments = models.CharField(max_length=200, null=True, blank=True)
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL, null=True, blank=True)
+    manufacturer = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
     manufacturer_pn = models.CharField(max_length=200, null=True, blank=True)
     link_compra = models.CharField(max_length=200, null=True, blank=True)
     link_datasheet = models.CharField(max_length=200, null=True, blank=True)
     unit_price = models.FloatField(null=True, blank=True)
     total_units = models.PositiveIntegerField(blank=True, null=True)
-    in_stock = models.PositiveIntegerField(blank=True, null=True)
+    in_stock = models.PositiveIntegerField(default=0, blank=True, null=True)
     taken = models.PositiveIntegerField(default=0, blank=True, null=True)
 
     #type = models.CharField(max_length=100, choices=ITEM_TYPES, blank=True, null=True)

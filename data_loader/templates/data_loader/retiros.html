@@ -44,11 +44,11 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Type</th>
-                    <th>SubType</th>
-                    <th>Manufacturer</th>
-                    <th>Manufacturer PN</th>
-                    <th>En Stock</th>
+                    <th>Item</th>
+                    <th>Date</th>
+                    <th>Project</th>
+                    <th>System</th>
+                    <th>Unidades</th>
                     <th></th>
                 </tr>
             </thead>
@@ -57,11 +57,11 @@
                 {% for retiro in page_obj %}
                 <tr>
                     <td>{{retiro.id}}</td>
-                    <td>{{retiro.type}}</td>
-                    <td>{{retiro.subtype}}</td>
-                    <td>{{retiro.manufacturer}}</td>
-                    <td>{{retiro.manufacturer_pn}}</td>
-                    <td>{{retiro.in_stock}}</td>
+                    <td>{{retiro.item}}</td>
+                    <td>{{retiro.date}}</td>
+                    <td>{{retiro.project}}</td>
+                    <td>{{retiro.system}}</td>
+                    <td>{{retiro.unidades}}</td>
                     {% comment %}
                     <td>
                         <a href="{% url 'data_loader:view_item' item.id%}" class="btn btn-primary btn-sm">View</a>

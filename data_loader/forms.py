@@ -36,6 +36,8 @@ class CreateType(forms.ModelForm):
         fields = '__all__'
 
 class CreateCompra(forms.ModelForm):
+    agregar_items = forms.BooleanField(required=False, initial=True)
+    
     class Meta:
         model = models.Compra
         fields = '__all__'
@@ -43,29 +45,47 @@ class CreateCompra(forms.ModelForm):
             'date':DateInput()
         }
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['agregar_items'].widget.attrs.update({'class':'btn btn-default'})
+        
+            
+ACCIONES = [('stock','A Stock'),
+            ('proyecto','A Proyecto')]
 
 """ Model Forms - Varios Items con una sola carga """
 # Lo comentado es por si en la carga del item se lo quiere asignar ya a un proyecto
 # De lo contrario hay que cargarlo inicialmente a stock y luego llevarlo a un proyecto
 class CreateItem(forms.ModelForm):
+    repeat = forms.IntegerField(required=False, help_text='Crea n entradas con n códigos')
+    #asignar = forms.ChoiceField(choices=ACCIONES, widget=forms.RadioSelect)
     #project = forms.CharField(max_length=200, required=False, label='project', widget=forms.Select())
+    #system = forms.CharField(max_length=200, required=False, label='system', widget=forms.Select())
     
     class Meta:
         model = Item
         fields = '__all__'
         exclude = ['compra', 'total_units', 'taken']
+        help_texts = {
+            'in_stock': 'Unidades asignadas a cada entrada (n por código)'
+        }
     
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
+    #     self.fields['system'].queryset = System.objects.none()
     #     self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
     #     self.fields['project'].required = False
+        
+    #     if 'project' in self.data:
+    #         print('\n\nHHH')
+    #         try:
+    #             project_id = int(self.data.get('project'))
+    #             self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')
+    #         except (ValueError, TypeError):
+    #             pass
+    #     elif self.instance.pk:
+    #         self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
 
-#ItemFormSet = modelformset_factory(
-#    Item, fields='__all__', exclude=['compra'], extra=1
-#)
 
 ItemFormSet = modelformset_factory(
     Item, form = CreateItem, extra=1
