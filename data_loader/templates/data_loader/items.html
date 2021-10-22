@@ -25,7 +25,7 @@
     <div class='row'>
         <div class='col'>
             <div class='card card-body'>
-                <form method='get'>
+                <form method='get' id="FiltroItem" data-subtypes-url="{% url 'data_loader:ajax_load_subtypes' %}">
                     {{filtros.form.as_table}}
                 <button class='btn btn-primary' type='submit'> Search </button>
                 </form>
@@ -99,10 +99,26 @@
         </li>
         {% endif %}
     </ul>
-
-
-
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_type").change(function () {
+        const url = $("#FiltroItem").attr("data-subtypes-url");  // get the url of the `load_cities` view
+        const typeId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'type': typeId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_subtype").html(data);  // replace the contents of the city input with the data that came from the server
+            }
+        });
+
+    });
+</script>
 
 <script>
     $(function() {

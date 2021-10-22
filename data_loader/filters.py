@@ -2,11 +2,29 @@ from django.forms.widgets import NumberInput, Textarea
 import django_filters
 from django_filters import DateFilter, CharFilter, NumberFilter
 from django import forms
-from .models import Item
+from .models import Item, Retiro
+from definitions.models import ItemSubType
 
 class DateInput(forms.DateInput):
     input_type = 'date'
     size=1
+
+class ItemFilterForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['subtype'].queryset = ItemSubType.objects.none()
+
+        if 'type' in self.data:
+            try:
+                type_id = int(self.data.get('type'))
+                self.fields['subtype'].queryset = ItemSubType.objects.filter(item_type = type_id).order_by('name')
+            except:
+                pass
+        else:
+            #self.fields['subtype'].queryset = ItemSubType.objects.all()
+            self.fields['subtype'].queryset = ItemSubType.objects.none()
+        # elif self.instance.pk:
+        #     self.fields['subtype'].queryset = self.instance.type.subtype_set.order_by('name')
 
 class ItemFilter(django_filters.FilterSet):
     #start_date = DateFilter(field_name='load_date', lookup_expr='gte', widget=DateInput())
@@ -21,3 +39,19 @@ class ItemFilter(django_filters.FilterSet):
         model = Item
         fields = '__all__'
         exclude = ['comments']
+        form = ItemFilterForm
+
+class RetiroFilter(django_filters.FilterSet):
+    start_date = DateFilter(field_name='date', lookup_expr='gte', widget=DateInput())
+    end_date = DateFilter(field_name='date', lookup_expr='lte', widget=DateInput())
+    #manufacturer_pn = CharFilter(field_name='manufacturer_pn', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
+    #unit_price = NumberFilter(field_name='unit_price', widget=NumberInput(attrs={'size':'10'}))
+    comentarios = CharFilter(field_name='comentarios', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
+    #link_compra = CharFilter(field_name='link_compra', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
+    #link_datasheet = CharFilter(field_name='link_datasheet', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
+    unidades = NumberFilter(field_name='unidades', widget=NumberInput(attrs={'size':'10'}))
+
+    class Meta:
+        model = Retiro
+        fields = ['item','item__type', 'item__subtype', 'retirado_por','project','system']
+        exclude = ['date']

@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from .serializers import *
 from datetime import datetime
 
-from .filters import ItemFilter
+from .filters import ItemFilter, RetiroFilter
 from django.core.paginator import Paginator
 
 
@@ -87,23 +87,47 @@ def edit_compra(request, id):
     else:
         return render(request, 'data_loader/edit_compra.html', {'form':form})
 
-def view_compra(request, id):
-    selected_compra = Compra.objects.get(pk=id)
-    items_values = Item.objects.filter(compra = selected_compra).order_by('id')
+"""
+item = Item.objects.get(pk = id)
+attrs = [(field.name.title(), getattr(item, field.name)) for field in item._meta.fields]
+#attrs.append( ('Person', ', '.join( [person.full_name for person in list(item.person.all())] )) )
 
-    filtros = ItemFilter(request.GET, queryset=items_values)
-    items_values = filtros.qs
+retiros = Retiro.objects.filter(item = id).order_by('id')
+
+paginator = Paginator(retiros, 20)
+page_number = request.GET.get('page')
+page_obj = Paginator.get_page(paginator, page_number)
+
+context = {
+    'attrs':attrs,
+    'retiros':retiros,
+    'page_obj':page_obj
+    }
+
+return render(request, 'data_loader/view_item.html', context)
+"""
+
+def view_compra(request, id):
+    compra = Compra.objects.get(pk=id)
+    attrs = [(field.name.title(), getattr(compra, field.name)) for field in compra._meta.fields]
+    #items_values = Item.objects.filter(compra = selected_compra).order_by('id')
+
+    items = Item.objects.filter(compra = compra).order_by('id')
+
+    #filtros = ItemFilter(request.GET, queryset=items_values)
+    #items_values = filtros.qs
     
-    paginator = Paginator(items_values, 20)
+    paginator = Paginator(items, 20)
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator, page_number)
     
     context = {
-        'items':items_values,
+        'attrs':attrs,
+        'items':items,
         'page_obj':page_obj,
-        'filtros':filtros
+        #'filtros':filtros
         }
-    return render(request, 'data_loader/items.html', context)
+    return render(request, 'data_loader/view_compra.html', context)
 
 def items(request):
     items_values = Item.objects.order_by('id')
@@ -266,8 +290,8 @@ def retirar_item(request, item):
         
 def retiros(request):
     retiros_values = Retiro.objects.order_by('id')
-    #filtros = RetiroFilter(request.GET, queryset=retiros_values)
-    #retiros_values = filtros.qs
+    filtros = RetiroFilter(request.GET, queryset=retiros_values)
+    retiros_values = filtros.qs
     
     paginator = Paginator(retiros_values, 20)
     page_number = request.GET.get('page')
@@ -276,7 +300,7 @@ def retiros(request):
     context = {
         'retiros':retiros_values,
         'page_obj':page_obj,
-        #'filtros':filtros
+        'filtros':filtros
         }
     return render(request, 'data_loader/retiros.html', context)
 
@@ -499,12 +523,20 @@ def view_supplier(request, id):
 # AJAX
 def load_systems(request):
     project_id = request.GET.get('project')
-    systems = System.objects.filter(project = project_id).all()
+    if project_id == '':
+        #systems = System.objects.all()
+        systems = System.objects.none()
+    else:
+        systems = System.objects.filter(project = project_id).all()
     return render(request, 'data_loader/system_dropdown.html', {'systems': systems})
 
 def load_subtypes(request):
     type_id = request.GET.get('type')
-    subtypes = ItemSubType.objects.filter(item_type = type_id).all()
+    if type_id == '':
+        #subtypes = ItemSubType.objects.all()
+        subtypes = ItemSubType.objects.none()
+    else:
+        subtypes = ItemSubType.objects.filter(item_type = type_id).all()
     return render(request, 'data_loader/subtype_dropdown.html', {'subtypes': subtypes})
 
 # def load_stages(request):

@@ -8,9 +8,9 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="">Retiros</a>
+                        <a href="">Compras</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Lista de Retiros</li>
+                    <li class="breadcrumb-item active" aria-current="page">Lista de Compras</li>
                 </ol>
             </nav>
         </div>
@@ -19,53 +19,64 @@
             {%comment%}
             <!--<a href="{%url 'data_loader:load_item'%}" class="btn btn-primary">Load Item</a>-->
             {%endcomment%}
-        </div> 
+        </div>  
     </div>
 
-    <div class='row'>
-        <div class='col'>
-            <div class='card card-body'>
-                <form method='get'>
-                    {{filtros.form}}
-                <button class='btn btn-primary' type='submit'> Search </button>
-                </form>
-            </div>
-
-        </div>
-    </div>
-    
+    <h1>Datos</h1>
+    <table class="table table-stripped table-hover">
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for name, value in attrs %}
+                {% if value != None %}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{value}}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
 
     <div class="container">
-        {% if retiros.count %}
-        
+        {% if items.count %}
+        <h1>Items</h1>
         <table id="myTable" class="table table-stripped table-hover">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Item</th>
-                    <th>Date</th>
-                    <th>Project</th>
-                    <th>System</th>
+                    <th>Type</th>
+                    <th>SubType</th>
+                    <th>Description</th>
+                    <th>Manufacturer</th>
+                    <th>Manufacturer PN</th>
                     <th>Unidades</th>
+                    <th>En Stock</th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for retiro in page_obj %}
+                {% for item in page_obj %}
                 <tr>
-                    <td>{{retiro.id}}</td>
-                    <td>{{retiro.item}}</td>
-                    <td>{{retiro.date}}</td>
-                    <td>{{retiro.project}}</td>
-                    <td>{{retiro.system}}</td>
-                    <td>{{retiro.unidades}}</td>
-                    {% comment %}
+                    <td>{{item.id}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.subtype}}</td>
+                    <td>{{item.description}}</td>
+                    <td>{{item.manufacturer}}</td>
+                    <td>{{item.manufacturer_pn}}</td>
+                    <td>{{item.total_units}}</td>
+                    <td>{{item.in_stock}}</td>
                     <td>
                         <a href="{% url 'data_loader:view_item' item.id%}" class="btn btn-primary btn-sm">View</a>
                         <a href="{% url 'data_loader:edit_item' item.id%}" class="btn btn-secondary btn-sm">Edit</a>
+                        <a href="{% url 'data_loader:retirar_item' item.id%}" class="btn btn-secondary btn-sm">Retirar</a>
                     </td>
-                    {% endcomment %}
                 </tr>
                 {% endfor %}
             </tbody>
@@ -96,7 +107,8 @@
         </li>
         {% endif %}
     </ul>
-
+    
+    
 </div>
 
 <script>
