@@ -26,7 +26,7 @@
     <div class='row'>
         <div class='col'>
             <div class='card card-body'>
-                <form method='get' id="FiltroRetiro" data-subtypes-url="{% url 'data_loader:ajax_load_subtypes' %}">
+                <form method='get' id="FiltroRetiro" data-subtypes-url="{% url 'data_loader:ajax_load_subtypes' %}" data-systems-url="{% url 'data_loader:ajax_load_systems' %}">
                     {{filtros.form}}
                 <button class='btn btn-primary' type='submit'> Search </button>
                 </form>
@@ -111,6 +111,24 @@
             },
             success: function (data) {   // `data` is the return of the `load_cities` view function
                 $("#id_item__subtype").html(data);  // replace the contents of the city input with the data that came from the server
+            }
+        });
+
+    });
+</script>
+
+<script>
+    $("#id_project").change(function () {
+        const url = $("#FiltroRetiro").attr("data-systems-url");  // get the url of the `load_cities` view
+        const projectId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'project': projectId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_system").html(data);  // replace the contents of the city input with the data that came from the server
             }
         });
 

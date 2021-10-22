@@ -2,7 +2,7 @@ from django.forms.widgets import NumberInput, Textarea
 import django_filters
 from django_filters import DateFilter, CharFilter, NumberFilter
 from django import forms
-from .models import Compra, Item, Retiro
+from .models import Compra, Item, Retiro, System
 from definitions.models import ItemSubType
 
 class DateInput(forms.DateInput):
@@ -42,8 +42,8 @@ class ItemFilter(django_filters.FilterSet):
 class RetiroFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
         self.fields['item__subtype'].queryset = ItemSubType.objects.none()
-
         if 'item__type' in self.data:
             try:
                 type_id = int(self.data.get('item__type'))
@@ -52,6 +52,16 @@ class RetiroFilterForm(forms.Form):
                 pass
         else:
             self.fields['item__subtype'].queryset = ItemSubType.objects.none()
+
+        self.fields['system'].queryset = System.objects.none()
+        if 'project' in self.data:
+            try:
+                project_id = int(self.data.get('project'))
+                self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        else:
+            self.fields['system'].queryset = System.objects.none()
 
 class RetiroFilter(django_filters.FilterSet):
     start_date = DateFilter(field_name='date', lookup_expr='gte', widget=DateInput())
