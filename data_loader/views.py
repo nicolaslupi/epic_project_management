@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from .serializers import *
 from datetime import datetime
 
-from .filters import ItemFilter, RetiroFilter
+from .filters import ItemFilter, RetiroFilter, CompraFilter
 from django.core.paginator import Paginator
 
 
@@ -55,8 +55,8 @@ def load_purchase(request):
 
 def compras(request):
     compras_values = Compra.objects.order_by('id')
-    #filtros = RetiroFilter(request.GET, queryset=retiros_values)
-    #retiros_values = filtros.qs
+    filtros = CompraFilter(request.GET, queryset=compras_values)
+    compras_values = filtros.qs
     
     paginator = Paginator(compras_values, 20)
     page_number = request.GET.get('page')
@@ -65,7 +65,7 @@ def compras(request):
     context = {
         'compras':compras_values,
         'page_obj':page_obj,
-        #'filtros':filtros
+        'filtros':filtros
         }
     return render(request, 'data_loader/compras.html', context)
 

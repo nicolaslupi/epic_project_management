@@ -153,27 +153,3 @@ class Retiro(models.Model):
 
     def __str__(self):
         return self.item.type.name
-
-# Van a tener un campo llamado item_ptr
-# class Atornillador(Item):
-#     RPM = models.IntegerField(blank=True, null=True)
-#     class Meta:
-#         verbose_name_plural = 'atornilladores'
-#     def __str__(self):
-#         return str(str(self.item_ptr)) + ' ' +  str(self.RPM)
-
-# class Capacitor(Item):
-#     capacitancia = models.IntegerField(blank=True, null=True)
-#     voltaje = models.IntegerField(blank=True, null=True)
-#     class Meta:
-#         verbose_name_plural = 'capacitores'
-#     def __str__(self):
-#         return str(str(self.item_ptr)) + ' ' +  str(self.capacitancia) + ' - ' + str(self.voltaje)
-
-# class Valvula(Item):
-#     material = models.CharField(max_length=200, blank=True, null=True)
-#     pulgadas = models.CharField(max_length=200, blank=True, null=True)
-#     class Meta:
-#         verbose_name_plural = 'valvulas'
-#     def __str__(self):
-#         return str(str(self.item_ptr)) + ' ' + str(self.material) + ' - ' + str(self.pulgadas)
