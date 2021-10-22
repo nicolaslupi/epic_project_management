@@ -60,12 +60,10 @@
                     <td>{{retiro.project}}</td>
                     <td>{{retiro.system}}</td>
                     <td>{{retiro.unidades}}</td>
-                    {% comment %}
                     <td>
-                        <a href="{% url 'data_loader:view_item' item.id%}" class="btn btn-primary btn-sm">View</a>
-                        <a href="{% url 'data_loader:edit_item' item.id%}" class="btn btn-secondary btn-sm">Edit</a>
+                        <a href="{% url 'data_loader:view_retiro' retiro.id%}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{% url 'data_loader:edit_retiro' retiro.id%}" class="btn btn-secondary btn-sm">Edit</a>
                     </td>
-                    {% endcomment %}
                 </tr>
                 {% endfor %}
             </tbody>

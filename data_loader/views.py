@@ -304,6 +304,29 @@ def retiros(request):
         }
     return render(request, 'data_loader/retiros.html', context)
 
+def edit_retiro(request, id):
+    retiro = Retiro.objects.get(pk=id)
+    form = forms.RetirarItem(request.POST or None, instance=retiro)
+    if request.method == 'POST':
+        form.save()
+        return redirect('data_loader:retiros')
+    else:
+        return render(request, 'data_loader/retirar_item.html', {'form':form})
+
+def view_retiro(request, id):
+    retiro = Retiro.objects.get(pk = id)
+    attrs_retiro = [(field.name.title(), getattr(retiro, field.name)) for field in retiro._meta.fields]
+    
+    item = Item.objects.get(pk = retiro.item.id)
+    attrs_item = [(field.name.title(), getattr(item, field.name)) for field in item._meta.fields]
+    
+    context = {
+        'attrs_retiro':attrs_retiro,
+        'attrs_item':attrs_item,
+        }
+
+    return render(request, 'data_loader/view_retiro.html', context)
+
 """ Load Item Viejo """
 # def load_item(request, compra):
 #     print('\n\n',compra)
@@ -372,21 +395,23 @@ def load_system(request):
 def view_system(request, id):
     selected_system = System.objects.get(pk=id)
     descendents = selected_system.get_descendants(include_self = True)
-    items_values = Item.objects.filter(system__in = descendents).order_by('id')
-
-    filtros = ItemFilter(request.GET, queryset=items_values)
-    items_values = filtros.qs
     
-    paginator = Paginator(items_values, 20)
+    retiros = Retiro.objects.filter(system__in = descendents).order_by('id')
+    #items_values = Item.objects.filter(system__in = descendents).order_by('id')
+
+    #filtros = ItemFilter(request.GET, queryset=items_values)
+    #items_values = filtros.qs
+    
+    paginator = Paginator(retiros, 20)
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator, page_number)
     
     context = {
-        'items':items_values,
+        'retiros':retiros,
         'page_obj':page_obj,
-        'filtros':filtros
+        #'filtros':filtros
         }
-    return render(request, 'data_loader/items.html', context)
+    return render(request, 'data_loader/retiros.html', context)
 
 
 def projects(request):
@@ -416,22 +441,23 @@ def load_project(request):
 def view_project(request, id):
     selected_project = Project.objects.get(pk=id)
     descendents = selected_project.get_descendants(include_self = True)
-    items_values = Item.objects.filter(project__in = descendents).order_by('id')
-
-
-    filtros = ItemFilter(request.GET, queryset=items_values)
-    items_values = filtros.qs
     
-    paginator = Paginator(items_values, 20)
+    retiros = Retiro.objects.filter(project__in = descendents).order_by('id')
+    #items_values = Item.objects.filter(system__in = descendents).order_by('id')
+
+    #filtros = ItemFilter(request.GET, queryset=items_values)
+    #items_values = filtros.qs
+    
+    paginator = Paginator(retiros, 20)
     page_number = request.GET.get('page')
     page_obj = Paginator.get_page(paginator, page_number)
     
     context = {
-        'items':items_values,
+        'retiros':retiros,
         'page_obj':page_obj,
-        'filtros':filtros
+        #'filtros':filtros
         }
-    return render(request, 'data_loader/items.html', context)
+    return render(request, 'data_loader/retiros.html', context)
 
 
 def persons(request):
