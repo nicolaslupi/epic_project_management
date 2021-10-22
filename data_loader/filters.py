@@ -24,7 +24,10 @@ class ItemFilterForm(forms.Form):
             self.fields['subtype'].queryset = ItemSubType.objects.none()
         
 class ItemFilter(django_filters.FilterSet):
+    supplier_pn = CharFilter(field_name='supplier_pn', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
     manufacturer_pn = CharFilter(field_name='manufacturer_pn', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
+    start_date = DateFilter(field_name='compra__date', lookup_expr='gte', widget=DateInput())
+    end_date = DateFilter(field_name='compra__date', lookup_expr='lte', widget=DateInput())
     unit_price = NumberFilter(field_name='unit_price', widget=NumberInput(attrs={'size':'10'}))
     description = CharFilter(field_name='description', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
     link_compra = CharFilter(field_name='link_compra', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
@@ -34,6 +37,7 @@ class ItemFilter(django_filters.FilterSet):
         model = Item
         fields = ['compra','compra__supplier','type','subtype','manufacturer']
         form = ItemFilterForm
+
 
 class RetiroFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -60,7 +64,6 @@ class RetiroFilter(django_filters.FilterSet):
         fields = ['item','item__type', 'item__subtype', 'retirado_por','project','system']
         exclude = ['date']
         form = RetiroFilterForm
-
 
 
 class CompraFilter(django_filters.FilterSet):

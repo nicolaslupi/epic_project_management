@@ -100,6 +100,7 @@ class Item(models.Model):
     subtype = models.ForeignKey(ItemSubType, on_delete=models.SET_NULL, null=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     comments = models.CharField(max_length=200, null=True, blank=True)
+    supplier_pn = models.CharField(max_length=200, null=True, blank=True)
     manufacturer = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True)
     manufacturer_pn = models.CharField(max_length=200, null=True, blank=True)
     link_compra = models.CharField(max_length=200, null=True, blank=True)

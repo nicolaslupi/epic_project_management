@@ -100,7 +100,7 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-    $("#id_type").change(function () {
+    $("#id_item__type").change(function () {
         const url = $("#FiltroRetiro").attr("data-subtypes-url");  // get the url of the `load_cities` view
         const typeId = $(this).val();  // get the selected country ID from the HTML input
 
@@ -110,7 +110,7 @@
                 'type': typeId       // add the country id to the GET parameters
             },
             success: function (data) {   // `data` is the return of the `load_cities` view function
-                $("#id_subtype").html(data);  // replace the contents of the city input with the data that came from the server
+                $("#id_item__subtype").html(data);  // replace the contents of the city input with the data that came from the server
             }
         });
 

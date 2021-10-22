@@ -220,7 +220,6 @@ def load_item(request, compra):
             instance.total_units = instance.in_stock
 
             repeat = form.cleaned_data.get('repeat')
-            print('\n\n', repeat)
             if repeat == None:
                 repeat = 1
             else:
@@ -275,7 +274,6 @@ def retirar_item(request, item):
         form = forms.RetirarItem(in_stock, request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
-            print('\n\n', request.POST)
             instance.item = item
             unidades = instance.unidades
             item.in_stock -= unidades
