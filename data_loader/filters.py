@@ -33,9 +33,21 @@ class ItemFilter(django_filters.FilterSet):
     class Meta:
         model = Item
         fields = ['compra','compra__supplier','type','subtype','manufacturer']
-        #fields = '__all__'
-        #exclude = ['comments']
         form = ItemFilterForm
+
+class RetiroFilterForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['item__subtype'].queryset = ItemSubType.objects.none()
+
+        if 'item__type' in self.data:
+            try:
+                type_id = int(self.data.get('item__type'))
+                self.fields['item__subtype'].queryset = ItemSubType.objects.filter(item_type = type_id).order_by('name')
+            except:
+                pass
+        else:
+            self.fields['item__subtype'].queryset = ItemSubType.objects.none()
 
 class RetiroFilter(django_filters.FilterSet):
     start_date = DateFilter(field_name='date', lookup_expr='gte', widget=DateInput())
@@ -47,6 +59,9 @@ class RetiroFilter(django_filters.FilterSet):
         model = Retiro
         fields = ['item','item__type', 'item__subtype', 'retirado_por','project','system']
         exclude = ['date']
+        form = RetiroFilterForm
+
+
 
 class CompraFilter(django_filters.FilterSet):
     start_date = DateFilter(field_name='date', lookup_expr='gte', widget=DateInput())

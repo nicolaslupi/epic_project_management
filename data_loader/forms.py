@@ -113,8 +113,18 @@ class RetirarItem(forms.ModelForm):
 
     def __init__(self, in_stock, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #print('\n\n',max_unidades)
         self.fields['unidades'] = forms.IntegerField(validators=[MaxValueValidator(in_stock)])
+
+        self.fields['system'].queryset = System.objects.none()
+        
+        if 'project' in self.data:
+            try:
+                project_id = int(self.data.get('project'))
+                self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
 
 # class CreateItem(forms.ModelForm):
 #     #repeat = forms.IntegerField(required=False)
