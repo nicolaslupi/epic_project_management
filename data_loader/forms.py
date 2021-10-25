@@ -59,9 +59,9 @@ ACCIONES = [('stock','A Stock'),
 # De lo contrario hay que cargarlo inicialmente a stock y luego llevarlo a un proyecto
 class CreateItem(forms.ModelForm):
     repeat = forms.IntegerField(required=False, help_text='Crea n entradas con n códigos')
-    #asignar = forms.ChoiceField(choices=ACCIONES, widget=forms.RadioSelect)
-    #project = forms.CharField(max_length=200, required=False, label='project', widget=forms.Select())
-    #system = forms.CharField(max_length=200, required=False, label='system', widget=forms.Select())
+    asignar = forms.ChoiceField(choices=ACCIONES, widget=forms.RadioSelect)
+    project = forms.CharField(max_length=200, required=False, label='Project', widget=forms.Select())
+    system = forms.CharField(max_length=200, required=False, label='System', widget=forms.Select())
     
     class Meta:
         model = models.Item
@@ -73,6 +73,8 @@ class CreateItem(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['in_stock'].label = 'Unidades'
+        
         self.fields['subtype'].queryset = ItemSubType.objects.none()
 
         if 'type' in self.data:
@@ -84,19 +86,27 @@ class CreateItem(forms.ModelForm):
         elif self.instance.pk:
             self.fields['subtype'].queryset = self.instance.type.subtype_set.order_by('name')
 
-    #     self.fields['system'].queryset = System.objects.none()
-    #     self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
-    #     self.fields['project'].required = False
+        self.fields['system'].queryset = System.objects.none()
+        self.fields['project'] = TreeNodeChoiceField(queryset=Project.objects.all())
+        self.fields['project'].required = False
         
-    #     if 'project' in self.data:
-    #         print('\n\nHHH')
-    #         try:
-    #             project_id = int(self.data.get('project'))
-    #             self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')
-    #         except (ValueError, TypeError):
-    #             pass
-    #     elif self.instance.pk:
-    #         self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
+        if 'project' in self.data:
+            print('\n\nHHH')
+            try:
+                project_id = int(self.data.get('project'))
+                self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['system'].queryset = self.instance.project.system_set.order_by('name')
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        asignar = cleaned_data.get('asignar')
+        proyecto = cleaned_data.get('project')
+        if (asignar=='proyecto') and not proyecto:
+            raise forms.ValidationError("Asignar a un proyecto válido o a stock")
+        return cleaned_data
 
 # ItemFormSet = modelformset_factory(
 #     Item, form = CreateItem, extra=1

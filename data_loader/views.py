@@ -87,25 +87,6 @@ def edit_compra(request, id):
     else:
         return render(request, 'data_loader/edit_compra.html', {'form':form})
 
-"""
-item = Item.objects.get(pk = id)
-attrs = [(field.name.title(), getattr(item, field.name)) for field in item._meta.fields]
-#attrs.append( ('Person', ', '.join( [person.full_name for person in list(item.person.all())] )) )
-
-retiros = Retiro.objects.filter(item = id).order_by('id')
-
-paginator = Paginator(retiros, 20)
-page_number = request.GET.get('page')
-page_obj = Paginator.get_page(paginator, page_number)
-
-context = {
-    'attrs':attrs,
-    'retiros':retiros,
-    'page_obj':page_obj
-    }
-
-return render(request, 'data_loader/view_item.html', context)
-"""
 
 def view_compra(request, id):
     compra = Compra.objects.get(pk=id)
@@ -228,14 +209,28 @@ def load_item(request, compra):
             for _ in range(repeat):
                 instance.pk = None
                 instance.save()
-            
+                #print('\n\n',form.cleaned_data.get('system'))
+                if form.cleaned_data.get('asignar') == 'proyecto':
+                    retiro = Retiro()
+                    retiro.item = instance
+                    retiro.project = form.cleaned_data.get('project')
+                    retiro.system = System.objects.get(pk = form.cleaned_data.get('system'))
+                    retiro.unidades = instance.in_stock
+                    instance.taken = instance.total_units
+                    instance.in_stock = 0
+                    instance.save()
+                    retiro.save()
+                    for person in instance.compra.loaded_by.all():
+                       retiro.retirado_por.add(person.pk)
+
+                    
             if 'continue' in request.POST:
                 request.method = 'GET'
                 form = forms.CreateItem()
             elif 'stop' in request.POST:
                 return redirect('data_loader:items')
     else:
-        form = forms.CreateItem()
+        form = forms.CreateItem({'asignar':'stock'})
     return render(request, 'data_loader/load_item.html', {'form':form})
 
 

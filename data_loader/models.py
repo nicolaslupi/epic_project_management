@@ -106,7 +106,7 @@ class Item(models.Model):
     link_compra = models.CharField(max_length=200, null=True, blank=True)
     link_datasheet = models.CharField(max_length=200, null=True, blank=True)
     unit_price = models.FloatField(null=True, blank=True)
-    total_units = models.PositiveIntegerField(blank=True, null=True)
+    total_units = models.PositiveIntegerField(default=0, blank=True, null=True)
     in_stock = models.PositiveIntegerField(default=0, blank=True, null=True)
     taken = models.PositiveIntegerField(default=0, blank=True, null=True)
 
