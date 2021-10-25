@@ -16,7 +16,8 @@
     </div>
 </div>
 
-
+<!--Solo carga types el superuser-->
+{%comment%}
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-10">
@@ -28,7 +29,7 @@
         </div>
     </div>
 </div>
-
+{%endcomment%}
 
 <div class="container">
     <form method="post" id="CreateItem" data-subtypes-url="{% url 'data_loader:ajax_load_subtypes' %}" data-systems-url="{% url 'data_loader:ajax_load_systems' %}">
