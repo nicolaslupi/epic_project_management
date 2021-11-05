@@ -66,7 +66,7 @@ class CreateItem(forms.ModelForm):
     class Meta:
         model = models.Item
         fields = '__all__'
-        exclude = ['compra', 'total_units', 'taken']
+        exclude = ['part_number', 'compra', 'total_units', 'taken']
         help_texts = {
             'in_stock': 'Unidades asignadas a cada entrada (n por código)'
         }
@@ -91,7 +91,6 @@ class CreateItem(forms.ModelForm):
         self.fields['project'].required = False
         
         if 'project' in self.data:
-            print('\n\nHHH')
             try:
                 project_id = int(self.data.get('project'))
                 self.fields['system'].queryset = System.objects.filter(project = project_id).order_by('name')

@@ -43,6 +43,8 @@ class RetiroFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
+        self.fields['item'].queryset = Item.objects.filter(pk__in = Retiro.objects.all().values_list('item'))
+
         self.fields['item__subtype'].queryset = ItemSubType.objects.none()
         if 'item__type' in self.data:
             try:
@@ -66,13 +68,13 @@ class RetiroFilterForm(forms.Form):
 class RetiroFilter(django_filters.FilterSet):
     start_date = DateFilter(field_name='date', lookup_expr='gte', widget=DateInput())
     end_date = DateFilter(field_name='date', lookup_expr='lte', widget=DateInput())
+    description = CharFilter(field_name='item__description', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
     comentarios = CharFilter(field_name='comentarios', lookup_expr='icontains', widget=Textarea(attrs= {'rows':1,'cols': 15 } ))
     unidades = NumberFilter(field_name='unidades', widget=NumberInput(attrs={'size':'10'}))
 
     class Meta:
         model = Retiro
-        fields = ['item','item__type', 'item__subtype', 'retirado_por','project','system']
-        exclude = ['date']
+        fields = ['item','item__type', 'item__subtype', 'description', 'retirado_por','project','system']
         form = RetiroFilterForm
 
 

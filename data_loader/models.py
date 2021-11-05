@@ -20,16 +20,6 @@ class Supplier(models.Model):
     def __str__(self):
         return self.name
 
-# class Manufacturer(models.Model):
-#     name = models.CharField(max_length=100)
-#     web = models.CharField(max_length=100, blank=True, null=True)
-#     address = models.CharField(max_length=100, blank=True, null=True)
-#     mail = models.CharField(max_length=100, blank=True, null=True)
-#     phone = models.CharField(max_length=100, blank=True, null=True)
-
-#     def __str__(self):
-#         return self.name
-
 class Person(models.Model):
     full_name = models.CharField(max_length=100)
     area = models.CharField(max_length=100, blank=True, null=True)
@@ -95,6 +85,7 @@ class Compra(models.Model):
     gasto = models.FloatField(null=True, blank=True)
 
 class Item(models.Model):
+    part_number = models.CharField(max_length=10, null=True, blank=True)
     compra = models.ForeignKey(Compra, on_delete=models.SET_NULL, null=True)
     type = models.ForeignKey(ItemType, on_delete=models.SET_NULL, null=True)
     subtype = models.ForeignKey(ItemSubType, on_delete=models.SET_NULL, null=True)
@@ -115,13 +106,7 @@ class Item(models.Model):
     #subtype = models.CharField(max_length=100)
     
     def __str__(self):
-        #title = self.type + ' - ' + self.project.name + ' - ' + self.system.name
-        #tags = ['Material', 'Pulgadas', 'RPM', 'Capacitancia', 'Voltaje']
-        #values = [self.material, self.pulgadas, self.RPM, self.capacitancia, self.voltaje]
-
-        #info = [tag + ': ' + str(value) for tag, value in zip(tags, values) if value != None ]
-        #title = str(self.pk) + ' - ' + self.type.name + ' - ' + ' - '.join(info)
-        title = str(self.pk) + ' ' + self.type.name + ' ' + self.subtype.name
+        title = str(self.part_number) + ' ' + self.subtype.name
         return title
     
     

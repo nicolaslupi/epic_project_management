@@ -42,7 +42,7 @@
         <table id="myTable" class="table table-stripped table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Part Number</th>
                     <th>Type</th>
                     <th>SubType</th>
                     <th>Description</th>
@@ -58,7 +58,7 @@
             <tbody>
                 {% for item in page_obj %}
                 <tr>
-                    <td>{{item.id}}</td>
+                    <td>{{item.part_number}}</td>
                     <td>{{item.type}}</td>
                     <td>{{item.subtype}}</td>
                     <td>{{item.description}}</td>

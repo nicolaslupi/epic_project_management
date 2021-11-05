@@ -208,6 +208,7 @@ def load_item(request, compra):
 
             for _ in range(repeat):
                 instance.pk = None
+                instance.part_number = instance.subtype.prefix + str(len(Item.objects.filter(subtype = instance.subtype)) + 1).zfill(6)
                 instance.save()
                 #print('\n\n',form.cleaned_data.get('system'))
                 if form.cleaned_data.get('asignar') == 'proyecto':
